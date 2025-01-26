@@ -1,6 +1,12 @@
-﻿@inherits LayoutComponentBase
+﻿@using Konnekt.Presentation.Components.ServerBar
+@inherits LayoutComponentBase
 
-@Body
+<div style="display:flex; flex-direction:row;">
+    <ServerBar />
+
+    @Body
+</div>
+
 
 <div id="blazor-error-ui">
     An unhandled error has occurred.

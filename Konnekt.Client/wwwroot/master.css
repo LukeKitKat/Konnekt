@@ -1,12 +1,83 @@
 ﻿/*IMPORT ALL CSS FILES TO THIS*/
-
-
-
-/*#region app.css Content*/
-h1:focus {
-    outline: none;
+:root {
+    /*Primary Color - Liquorice*/
+    --color-primary: hsl(var(--primary-h), var(--primary-s), var(--primary-l));
+    --primary-h: 356;
+    --primary-s: 87%;
+    --primary-l: 5%;
+    /*Secondary Color - Falu Red*/
+    --color-secondary: hsl(var(--secondary-h), var(--secondary-s), var(--secondary-l));
+    --secondary-h: 358;
+    --secondary-s: 62%;
+    --secondary-l: 32%;
+    /*Tertiary Color - Raspberry Rose*/
+    --color-tertiary: hsl(var(--tertiary-h), var(--tertiary-s), var(--tertiary-l));
+    --color-tertiary-darken: hsl(var(--tertiary-h), var(--tertiary-s), calc(var(--tertiary-l) * var(--darken-mod)));
+    --tertiary-h: 344;
+    --tertiary-s: 46%;
+    --tertiary-l: 49%;
+    /*White Color*/
+    --color-white: hsl(var(--white-h), var(--white-s), var(--white-l));
+    --white-h: 360;
+    --white-s: 100%;
+    --white-l: 100%;
+    /*Black Color*/
+    --color-black: hsl(var(--black-h), var(--black-s), var(--black-l));
+    --black-h: 195;
+    --black-s: 4%;
+    --black-l: 2%;
+    /*Darken Modifier*/
+    --darken-mod: 0.75 ;
 }
 
+/*Scrollbar*/
+::-webkit-scrollbar {
+    width: 2rem;
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-tertiary);
+    border-radius: 1rem;
+    border-right: 0.75rem solid transparent;
+    border-left: 0.75rem solid transparent;
+    background-clip: padding-box;
+}
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: var(--color-tertiary-darken);
+    }
+
+/*Defining rem*/
+html {
+    font-size: 62.5%;
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    height: inherit;
+    background-color: var(--color-primary);
+}
+
+div {
+    height: inherit;
+    width: 100%;
+}
+
+p {
+    font-size: 1.2rem;
+}
+
+p, h1, h2, h3, h3, h4, h5, h6, i {
+    color: var(--color-white)
+}
+
+/*#region app.css Content*/
 .valid.modified:not([type=checkbox]) {
     outline: 1px solid #26b050;
 }

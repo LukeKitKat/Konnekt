@@ -1,0 +1,27 @@
+.server-item-container {
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    padding-inline: 2rem;
+    padding-block: 1rem;
+    width: calc(var(--server-bar_width) - 4rem);
+}
+
+.server-item-picture {
+    height: fit-content;
+    width: fit-content;
+    align-self: center;
+}
+
+    .server-item-picture i {
+        font-size: 2rem;
+    }
+
+.server-item-name {
+    padding-left: 0.75rem;
+    margin: 0;
+    align-self: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
