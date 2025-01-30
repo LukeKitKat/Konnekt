@@ -7,12 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Styles\3-Components\IconButton.css" />
+    <Content Remove="wwwroot\Styles\3-Components\ServerBar.css" />
+    <Content Remove="wwwroot\Styles\3-Components\ServerItem.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Konnekt.Presentation\Konnekt.Presentation.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\Scripts\" />
-    <Folder Include="wwwroot\Styles\" />
+    <Folder Include="wwwroot\Styles\4-Overrides\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Styles\3-Components\IconButton.css" />
+    <None Include="wwwroot\Styles\3-Components\ServerBar.css" />
+    <None Include="wwwroot\Styles\3-Components\ServerItem.css" />
   </ItemGroup>
 
 </Project>

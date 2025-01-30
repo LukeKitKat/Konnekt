@@ -7,11 +7,11 @@
     border-right: 0.2rem solid var(--color-secondary);
 }
 
-.server-bar_width--collapsed {
+.server-bar--collapsed {
     --server-bar_width: 7rem;
 }
 
-.server-bar-controls {
+.server-bar__controls {
     height: 5rem;
     display: flex;
     flex-direction: row;
@@ -19,12 +19,12 @@
     border-bottom: 0.2rem solid var(--color-secondary);
 }
 
-.server-bar-container {
+.server-bar__container {
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-.server-bar-company-logo{
+.server-bar__company-logo{
     padding-left: 2rem;
     align-self: center;
 }

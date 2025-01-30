@@ -16,7 +16,7 @@ namespace Konnekt.Presentation.Components.ServerBar
             .Build();
 
         private string _serverBarClasses => new CssBuilder("server-bar")
-            .AddClass("server-bar_width--collapsed", _collapsed == true)
+            .AddClass("server-bar--collapsed", _collapsed == true)
             .Build();
 
         private List<string> _servers = new List<string>();

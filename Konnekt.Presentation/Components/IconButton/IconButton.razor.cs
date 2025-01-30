@@ -21,7 +21,7 @@ namespace Konnekt.Presentation.Components.IconButton
             .AddClass(Class)
             .Build();
 
-        private string _iconClass => new CssBuilder("icon-button-icon")
+        private string _iconClass => new CssBuilder("icon-button__icon")
             .AddClass(IconClass)
             .Build();
 

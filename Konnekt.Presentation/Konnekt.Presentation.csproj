@@ -20,4 +20,8 @@
     <ProjectReference Include="..\Konnect.Service\Konnect.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\MainLayout\" />
+  </ItemGroup>
+
 </Project>
