@@ -23,7 +23,7 @@ namespace Konnect.Service.BaseServices
             }
             catch (Exception ex)
             {
-                serviceResponse.Errors.Add((ex.Message ?? ex.InnerException?.Message) ?? "No Message Specified.");
+                serviceResponse.Errors.Add(($"{ex.Message} - {ex.InnerException?.Message}") ?? "No Message Specified.");
             }
 
             if (!serviceResponse.Errors.Any())
@@ -51,7 +51,7 @@ namespace Konnect.Service.BaseServices
             }
             catch (Exception ex)
             {
-                serviceResponse.Errors.Add((ex.Message ?? ex.InnerException?.Message) ?? "No Message Specified.");
+                serviceResponse.Errors.Add(($"{ex.Message} - {ex.InnerException?.Message}") ?? "No Message Specified.");
             }
 
             if (!serviceResponse.Errors.Any())

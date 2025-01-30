@@ -4,10 +4,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/"/>
     <link rel="stylesheet" href="Konnekt.Client.styles.css" />
     <link rel="stylesheet" href="Master.css"/>
     <link rel="stylesheet" href="Master.js"/>
-    <HeadOutlet />
+    <HeadOutlet @rendermode="@RenderMode.InteractiveServer" />
 </head>
 
 <body>

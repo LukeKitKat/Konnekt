@@ -1,6 +1,7 @@
-﻿<Router AppAssembly="typeof(Program).Assembly">
+﻿@using Konnekt.Presentation.Components.MainLayout
+
+<Router AppAssembly="@typeof(Program).Assembly" AdditionalAssemblies="@([typeof(MainLayout).Assembly])">
     <Found Context="routeData">
-        <RouteView RouteData="routeData" DefaultLayout="typeof(Konnekt.Presentation.Components.MainLayout.MainLayout)" />
-        <FocusOnNavigate RouteData="routeData" Selector="h1" />
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
     </Found>
 </Router>

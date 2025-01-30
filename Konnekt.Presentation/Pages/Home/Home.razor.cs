@@ -1,5 +1,6 @@
 ﻿using Konnect.Service.DatabaseManager.Models;
 using Konnect.Service.ServerNavigator;
+using Konnekt.Presentation.Components.MainLayout;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace Konnekt.Presentation.Pages.Home
     {
         [Inject]
         private ServerNavigator ServerNavigator { get; set; } = default!;
+
+        private MainLayout MainLayout { get; set; } = default!;
 
         private List<User> Users { get; set; } = new List<User>();
 

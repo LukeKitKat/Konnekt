@@ -26,6 +26,14 @@ namespace Konnect.Service.DatabaseManager.Models
         [MaxLength(255)]
         public string? DisplayName { get; set; }
 
+        [Required]
+        [Column(TypeName = "nvarchar(255)")]
+        [MaxLength(255)]
+        public string? Email { get; set; }
+
+        [Required]
+        public DateTime? DoB { get; set; }
+
         #endregion
 
         #region System Properties

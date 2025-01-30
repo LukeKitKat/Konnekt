@@ -1,5 +1,6 @@
 using Konnect.Service.BaseServices;
 using Konnect.Service.ServerNavigator;
+using Konnect.Service.UserManager;
 using Konnekt.Client.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddScoped<ServerNavigator, ServerNavigator>();
 builder.Services.AddScoped<CryptoManager, CryptoManager>();
+builder.Services.AddScoped<UserManager, UserManager>();
 
 var app = builder.Build();
 

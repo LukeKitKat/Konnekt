@@ -35,7 +35,7 @@ namespace Konnect.Service.ServerNavigator
                     PasswordHash = loginServiceResult.ProcessedHash,
                     PasswordSalt = loginServiceResult.Salt,
                     LastLogin = null,
-                    LastLoginLocation = null, 
+                    LastLoginLocation = null,
                 };
 
                 await db.AddAsync(user);

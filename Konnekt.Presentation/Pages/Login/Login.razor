@@ -1,3 +1,42 @@
+@using Konnekt.Presentation.Components.Button
+@using Konnekt.Presentation.Components.MainLayout
+@using Microsoft.AspNetCore.Components.Forms
 @page "/Login"
 
-<h3>Login</h3>
+<div class="login">
+
+    <div class="login__container">
+
+        <p>[K] - Konnekt</p>
+
+        @if (!Registering)
+        {
+            <EditForm class="login__details" EditContext="@EditContext" OnValidSubmit="LoginToExistingAccount">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <InputText @bind-Value="@LoginModel.LoginUserName" />
+                <ValidationMessage For="() => LoginModel.LoginUserName" />
+
+                <InputText @bind-Value="@LoginModel.LoginPassword" />
+                <ValidationMessage For="() => LoginModel.LoginPassword" />
+
+                <button type="submit">Submit</button>
+
+                <Button ButtonType="ButtonTypes.Submit" Label="Login" />
+            </EditForm>
+        }
+        else
+        {
+            <InputText DisplayName="Email" @bind-Value="@RegisteringUser.Email" />
+            <InputText DisplayName="Username" @bind-Value="@RegisteringUser.AccountName" />
+            <InputDate DisplayName="Date of Birth" @bind-Value="@RegisteringUser.DoB" />
+            <InputText DisplayName="Password" @bind-Value="@RegisteringPassword" />
+            <InputText DisplayName="Confirm Password" @bind-Value="@RegisteringConfirmPassword" />
+            <Button Label="Register" OnClick="RegisterNewUserAsync" />
+        }
+
+        <Button Label="@(Registering ? "Back to Login" : "Register")" OnClick="ToggleRegisterState" />
+    </div>
+
+</div>

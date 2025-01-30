@@ -15,6 +15,12 @@
     --tertiary-h: 344;
     --tertiary-s: 46%;
     --tertiary-l: 49%;
+    /*Quaternary Color - Grey*/
+    --color-grey: hsl(var(--grey-h), var(--grey-s), var(--grey-l));
+    --color-grey-darken: hsl(var(--grey-h), var(--grey-s), calc(var(--grey-l) * var(--darken-mod)));
+    --grey-h: 195;
+    --grey-s: 4%;
+    --grey-l: 49%;
     /*White Color*/
     --color-white: hsl(var(--white-h), var(--white-s), var(--white-l));
     --white-h: 360;
@@ -26,5 +32,5 @@
     --black-s: 4%;
     --black-l: 2%;
     /*Darken Modifier*/
-    --darken-mod: 0.75;
+    --darken-mod: 0.5;
 }
