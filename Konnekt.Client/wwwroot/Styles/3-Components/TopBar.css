@@ -1,0 +1,17 @@
+﻿.top-bar {
+    width: 100%;
+    height: var(--top-bar--height);
+    border-bottom: var(--border-standard);
+}
+
+.top-bar__container {
+    display: flex;
+    justify-content: space-between;
+    height: inherit;
+    padding-inline: 2rem;
+}
+
+.top-bar__company-logo {
+    margin: 0;
+    align-self: center;
+}

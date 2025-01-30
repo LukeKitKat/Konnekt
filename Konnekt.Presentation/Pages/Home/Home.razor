@@ -1,7 +1,15 @@
-﻿<div class="home">
+﻿@using Konnekt.Presentation.Components.IconButton
+<div class="home">
     <div class="home-container">
 
         <h3>Home</h3>
+
+        <IconButton OnClick="NavigateAsync" />
+
+        @foreach(var user in Users)
+        {
+            <p>@($"{user.Id} - {user.AccountName}")</p>
+        }
 
     </div>
 </div>

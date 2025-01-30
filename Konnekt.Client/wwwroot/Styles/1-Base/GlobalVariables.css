@@ -1,0 +1,8 @@
+﻿html {
+    --top-bar--height: 5rem;
+    --server-bar--width: 20rem;
+    --scroll-bar--width: 2rem;
+    /**/
+    --border-standard--width: 0.2rem;
+    --border-standard: var(--border-standard--width) solid var(--color-secondary);
+}

@@ -1,22 +1,24 @@
 .server-bar {
-    --server-bar_width: 20rem;
-
-    width: var(--server-bar_width);
+    width: var(--server-bar--width);
     display: flex;
     flex-direction: column;
-    border-right: 0.2rem solid var(--color-secondary);
+    border-right: var(--border-standard);
 }
 
 .server-bar--collapsed {
-    --server-bar_width: 7rem;
+    --server-bar--width: 7rem;
 }
 
 .server-bar__controls {
     height: 5rem;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between; 
-    border-bottom: 0.2rem solid var(--color-secondary);
+    flex-direction: row-reverse;
+    justify-content: center;
+    border-bottom: var(--border-standard);
+}
+
+.server-bar__controls-icon {
+    padding-right: calc(var(--scroll-bar--width) / 2);
 }
 
 .server-bar__container {
@@ -24,7 +26,32 @@
     overflow-x: hidden;
 }
 
-.server-bar__company-logo{
-    padding-left: 2rem;
+
+/*Server Bar Item*/
+.server-bar__item-container {
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    padding-inline: 2rem;
+    padding-block: 1rem;
+    width: calc(var(--server-bar_width) - 4rem);
+}
+
+.server-bar__item-picture {
+    height: fit-content;
+    width: fit-content;
     align-self: center;
+}
+
+    .server-bar__item-picture i {
+        font-size: 2rem;
+    }
+
+.server-bar__item-name {
+    padding-left: 0.75rem;
+    margin: 0;
+    align-self: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

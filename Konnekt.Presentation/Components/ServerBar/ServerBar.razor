@@ -1,27 +1,18 @@
 @using Konnekt.Presentation.Components.IconButton
-@using Konnekt.Presentation.Components.ServerBar.ServerItem
+@using Konnekt.Presentation.Components.ServerBar.ServerBarItem
 
 <div class="@_serverBarClasses">
 
     <div class="server-bar__controls">
         
-        @if (_collapsed)
-        {
-            <p class="server-bar__company-logo">[K]</p>
-        }
-        else
-        {
-            <p class="server-bar__company-logo">[K] - Konnekt</p>
-        }
-
-        <IconButton Class="server-bar__controls-icon" IconClass="@_collapsedClasses" OnClick="() => ToggleCollapse()" />
+        <IconButton Class="server-bar__controls-icon" Icon="@_collapsedClasses" OnClick="() => ToggleCollapse()" />
 
     </div>
 
     <div class="server-bar__container">
         @foreach (var server in _servers)
         {
-            <ServerItem ServerName="@(_collapsed ? string.Empty : server)" />
+            <ServerBarItem ServerName="@(_collapsed ? string.Empty : server)" />
         }
     </div>
 

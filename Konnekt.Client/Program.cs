@@ -1,3 +1,5 @@
+using Konnect.Service.BaseServices;
+using Konnect.Service.ServerNavigator;
 using Konnekt.Client.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,7 +8,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddServerSideBlazor();
+builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<ServerNavigator, ServerNavigator>();
+builder.Services.AddScoped<CryptoManager, CryptoManager>();
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -18,10 +27,16 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
+
 app.UseStaticFiles();
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
+app.MapRazorPages();
+
 app.Run();
+
+

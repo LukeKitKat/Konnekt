@@ -1,5 +1,5 @@
 ﻿::-webkit-scrollbar {
-    width: 2rem;
+    width: var(--scroll-bar--width);
     background-color: transparent;
 }
 

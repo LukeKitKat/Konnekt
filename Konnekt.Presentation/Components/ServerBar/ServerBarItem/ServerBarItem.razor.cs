@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Konnekt.Presentation.Components.ServerBar.ServerItem
+namespace Konnekt.Presentation.Components.ServerBar.ServerBarItem
 {
-    public partial class ServerItem
+    public partial class ServerBarItem
     {
         [Parameter]
         public string ServerName { get; set; } = string.Empty;
