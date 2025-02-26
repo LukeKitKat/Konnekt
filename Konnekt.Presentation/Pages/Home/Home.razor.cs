@@ -19,29 +19,31 @@ namespace Konnekt.Presentation.Pages.Home
 
         private List<User> Users { get; set; } = new List<User>();
 
-        protected override async Task OnInitializedAsync()
-        {
-            await RefreshListAsync();
-            await base.OnInitializedAsync();
-        }
+        private string? Test { get; set; }
 
-        private async Task RefreshListAsync()
-        {
-            var result = await ServerNavigator.ReadServersAsync();
+        //protected override async Task OnInitializedAsync()
+        //{
+        //    await RefreshListAsync();
+        //    await base.OnInitializedAsync();
+        //}
 
-            if (result.Success)
-                Users = result.Result!;
-        }
+        //private async Task RefreshListAsync()
+        //{
+        //    var result = await ServerNavigator.ReadServersAsync();
 
-        private async Task NavigateAsync()
-        {
-            var result = await ServerNavigator.AddToServersAsync("Name Test");
+        //    if (result.Success)
+        //        Users = result.Result!;
+        //}
 
-            if (result.Success)
-            {
-                await RefreshListAsync();
-                StateHasChanged();
-            }
-        }
+        //private async Task NavigateAsync()
+        //{
+        //    var result = await ServerNavigator.AddToServersAsync("Name Test");
+
+        //    if (result.Success)
+        //    {
+        //        await RefreshListAsync();
+        //        StateHasChanged();
+        //    }
+        //}
     }
 }

@@ -19,20 +19,42 @@ namespace Konnekt.Presentation.Components.Button
         [Parameter]
         public string LabelClass { get; set; } = string.Empty;
         [Parameter]
-        public ButtonTypes ButtonType { get; set; } = ButtonTypes.OnClick;
+        public string Icon { get; set; } = string.Empty;
+        [Parameter]
+        public string IconClass { get; set; } = string.Empty;
+        [Parameter]
+        public ButtonTypes ButtonType { get; set; }
+        [Parameter]
+        public bool Disabled { get; set; }
 
+        /// <summary>
+        /// CssBuilder to handle the class string creation for the button itself.
+        /// </summary>
         private string _class => new CssBuilder("button")
             .AddClass(Class)
             .Build();
 
-        private string _labelClass => new CssBuilder("button__label")
+        /// <summary>
+        /// CssBuilder to handle the class string creation for the label.
+        /// </summary>
+        private string _labelClass => new CssBuilder("button-label")
             .AddClass(LabelClass)
+            .Build();
+
+        /// <summary>
+        /// CssBuilder to handle the class string creation for the icon.
+        /// </summary>
+        private string _iconClass => new CssBuilder("icon-button-icon")
+            .AddClass(Icon)
+            .AddClass(IconClass)
             .Build();
 
         private string _htmlButtonType = string.Empty;
 
-        public Button()
+        protected override void OnInitialized()
         {
+            base.OnInitialized();
+
             switch (ButtonType)
             {
                 case ButtonTypes.OnClick:
@@ -40,11 +62,14 @@ namespace Konnekt.Presentation.Components.Button
                     break;
 
                 case ButtonTypes.Submit:
-                    _htmlButtonType = "button";
+                    _htmlButtonType = "submit";
                     break;
             }
         }
 
+        /// <summary>
+        /// A simple OnClick handler so that whenever OnClick is called, the page re-renders changes.
+        /// </summary>
         private void OnClickHandler()
         {
             OnClick.InvokeAsync();

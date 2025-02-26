@@ -1,22 +1,13 @@
-﻿using Konnect.Service.DatabaseManager.Models;
+using Konnect.Service.DatabaseManager.Models;
+using Konnekt.Client.Migrations;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Konnect.Service.DatabaseManager
 {
-    public class KonnektContext : DbContext
+    public class KonnektContext(DbContextOptions<KonnektContext> options) : IdentityDbContext<User>(options)
     {
-        public DbSet<User> Users { get; set; }
-
-        public KonnektContext() => Database.EnsureCreated();
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=localhost;Database=KonnektDevelopment;Trusted_Connection=true;TrustServerCertificate=true;Encrypt=false;ConnectRetryCount=0");
-        }
     }
 }

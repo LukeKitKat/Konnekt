@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Konnekt.Client", "Konnekt.Client\Konnekt.Client.csproj", "{34D3B9B8-ED60-4FBB-847A-058950CD2EB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Konnekt.Presentation", "Konnekt.Presentation\Konnekt.Presentation.csproj", "{6D51174C-242E-44C2-8455-F6AEA16A8571}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Konnekt.Presentation", "Konnekt.Presentation\Konnekt.Presentation.csproj", "{6D51174C-242E-44C2-8455-F6AEA16A8571}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Konnect.Service", "Konnect.Service\Konnect.Service.csproj", "{52599F79-F295-4011-97CA-9CAA80DDE376}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Konnect.Service", "Konnect.Service\Konnect.Service.csproj", "{52599F79-F295-4011-97CA-9CAA80DDE376}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Konnekt.Client", "Konnekt.Client\Konnekt.Client.csproj", "{5E09FE70-9B8A-43F8-B6C7-6B612C760952}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{34D3B9B8-ED60-4FBB-847A-058950CD2EB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{34D3B9B8-ED60-4FBB-847A-058950CD2EB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{34D3B9B8-ED60-4FBB-847A-058950CD2EB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{34D3B9B8-ED60-4FBB-847A-058950CD2EB2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6D51174C-242E-44C2-8455-F6AEA16A8571}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6D51174C-242E-44C2-8455-F6AEA16A8571}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D51174C-242E-44C2-8455-F6AEA16A8571}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -27,6 +23,10 @@ Global
 		{52599F79-F295-4011-97CA-9CAA80DDE376}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52599F79-F295-4011-97CA-9CAA80DDE376}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52599F79-F295-4011-97CA-9CAA80DDE376}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E09FE70-9B8A-43F8-B6C7-6B612C760952}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E09FE70-9B8A-43F8-B6C7-6B612C760952}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E09FE70-9B8A-43F8-B6C7-6B612C760952}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E09FE70-9B8A-43F8-B6C7-6B612C760952}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

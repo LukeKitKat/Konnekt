@@ -1,17 +1,21 @@
 ﻿@using Konnekt.Presentation.Components.IconButton
 @using Konnekt.Presentation.Components.MainLayout
 
+@page "/"
+
 <div class="home">
     <div class="home-container">
 
         <h3>Home</h3>
 
-        <IconButton OnClick="NavigateAsync" />
+        <Microsoft.AspNetCore.Components.Forms.InputText @bind-Value="@Test" />
+
+        @* <IconButton OnClick="NavigateAsync" />
 
         @foreach(var user in Users)
         {
             <p>@($"{user.Id} - {user.AccountName}")</p>
-        }
+        } *@
 
     </div>
 </div>

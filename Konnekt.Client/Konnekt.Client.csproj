@@ -1,28 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-Konnekt.Client-80697189-9777-4d7c-b556-8390f6f19244</UserSecretsId>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Remove="wwwroot\Styles\3-Components\IconButton.css" />
-    <Content Remove="wwwroot\Styles\3-Components\ServerBar.css" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\Konnekt.Presentation\Konnekt.Presentation.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\Scripts\" />
-    <Folder Include="wwwroot\Styles\4-Overrides\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\Styles\3-Components\IconButton.css" />
-    <None Include="wwwroot\Styles\3-Components\ServerBar.css" />
   </ItemGroup>
 
 </Project>
