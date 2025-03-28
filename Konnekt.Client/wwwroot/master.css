@@ -1,24 +1,36 @@
 ﻿/*#region IMPORT ALL CSS FILES TO THIS*/
 
-/*===RESOURCES===*/
-@import url(Styles/5-Resources/FontAwesome-V6.7.2Free/css/all.css);
+/*#region ===RESOURCES===*/
+    @import url(Styles/5-Resources/FontAwesome-V6.7.2Free/css/all.css);
+    @import url(Styles/5-Resources/bootstrap-5.3.3-dist/css/bootstrap.css);
+/*#endregion*/
 
-/*===OVERRIDES===*/
+/*#region ===OVERRIDES===*/
 
+/*#endregion*/
 
-/*===COMPONENTS===*/
-@import url(Styles/3-Components/Button.css);
-@import url(Styles/3-Components/IconButton.css);
-@import url(Styles/3-Components/ServerBar.css);
-@import url(Styles/3-Components/TopBar.css);
+/*#region ===COMPONENTS===*/
+    @import url(Styles/3-Components/Button.css);
+    @import url(Styles/3-Components/ServerBar.css);
+    @import url(Styles/3-Components/TopBar.css);
+/*#endregion*/
 
-/*===LAYOUT===*/
-@import url(Styles/2-Layout/Scrollbar.css);
-@import url(Styles/2-Layout/MainLayout.css);
+/*#region ===LAYOUT===*/
+    /*ORDER THIS IN TERMS OF IMPORTANCE*/
+    /*LEAST IMPORTANT*/
+    @import url(Styles/2-Layout/Popup.css);
+    @import url(Styles/2-Layout/Scrollbar.css);
+    @import url(Styles/2-Layout/MainLayout.css);
+    /*MOST IMPORTANT*/
+/*#endregion*/
 
-/*===BASE===*/
-@import url(Styles/1-Base/GlobalVariables.css);
-@import url(Styles/1-Base/Colors.css);
-@import url(Styles/1-Base/Base.css);
+/*#region ===BASE===*/
+    /*ORDER THIS IN TERMS OF IMPORTANCE*/
+    /*LEAST IMPORTANT*/
+    @import url(Styles/1-Base/GlobalVariables.css);
+    @import url(Styles/1-Base/Colors.css);
+    @import url(Styles/1-Base/Base.css);
+    /*MOST IMPORTANT*/
+/*#endregion*/
 
 /*#endregion*/

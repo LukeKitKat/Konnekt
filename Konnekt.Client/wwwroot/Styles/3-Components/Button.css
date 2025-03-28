@@ -1,15 +1,39 @@
 ﻿.button {
-    height: 2rem;
-    padding: 0;
-    margin: 0;
-    border: none;
-    background-color: var(--color-grey);
+    /**/
+    height: 3rem;
+    width: var(--button--width);
+    background-color: var(--color-pink);
 }
 
     .button:hover {
-        background-color: var(--color-grey-darken);
+        background-color: var(--color-pink-darken);
     }
 
-.button__label {
-    margin: 0;
+.button-icon {
+    font-size: 2rem;
+    width: 2rem;
 }
+
+/*#region Width Modifiers*/
+
+.button__width_max {
+    --button--width: 100%;
+}
+
+.button__width_square {
+    --button--width: 3rem;
+}
+
+.button__width_small {
+    --button--width: 5rem;
+}
+
+.button__width_medium {
+    --button--width: 7rem;
+}
+
+.button__width_large {
+    --button--width: 9rem;
+}
+
+/*#endregion*/

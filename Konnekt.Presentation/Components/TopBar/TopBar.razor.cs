@@ -14,7 +14,7 @@ namespace Konnekt.Presentation.Components.TopBar
 
         private void ProfileClicked()
         {
-            NavigationManager.NavigateTo("/Login");
+            NavigationManager.NavigateTo("/Account/Login");
         }
     }
 }

@@ -1,0 +1,29 @@
+﻿@using Konnekt.Presentation.Components.Popup
+@using Konnekt.Presentation.Components.ServerBar
+@using Konnekt.Presentation.Components.TopBar
+@using Microsoft.AspNetCore.Components.Rendering
+@inherits LayoutComponentBase
+
+<CascadingValue Value="this">
+
+    <PopupController @ref="@PopupController" />
+
+    <div class="main-layout">
+
+        <TopBar />
+
+        <div class="h-100 d-flex">
+
+            <ServerBar />
+
+            @Body
+
+        </div>
+    </div>
+</CascadingValue>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>

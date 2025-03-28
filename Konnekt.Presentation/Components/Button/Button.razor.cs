@@ -1,5 +1,6 @@
 ﻿using BlazorComponentUtilities;
 using Microsoft.AspNetCore.Components;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,9 @@ namespace Konnekt.Presentation.Components.Button
         [Parameter]
         public string IconClass { get; set; } = string.Empty;
         [Parameter]
-        public ButtonTypes ButtonType { get; set; }
+        public ButtonType ButtonType { get; set; }
+        [Parameter]
+        public ButtonSize ButtonSize { get; set; }
         [Parameter]
         public bool Disabled { get; set; }
 
@@ -31,40 +34,68 @@ namespace Konnekt.Presentation.Components.Button
         /// CssBuilder to handle the class string creation for the button itself.
         /// </summary>
         private string _class => new CssBuilder("button")
-            .AddClass(Class)
+            .AddClass(Class, !string.IsNullOrEmpty(Class))
+            .AddClass(_classButtonSize)
+            .AddClass("p-2 m-0 d-flex flex-row border-0")
             .Build();
 
         /// <summary>
         /// CssBuilder to handle the class string creation for the label.
         /// </summary>
-        private string _labelClass => new CssBuilder("button-label")
-            .AddClass(LabelClass)
+        private string _labelClass => new CssBuilder()
+            .AddClass(LabelClass, !string.IsNullOrEmpty(Label))
+            .AddClass("m-0")
+            .AddClass("ps-2 text-truncate", !string.IsNullOrEmpty(Label))
             .Build();
 
         /// <summary>
         /// CssBuilder to handle the class string creation for the icon.
         /// </summary>
-        private string _iconClass => new CssBuilder("icon-button-icon")
-            .AddClass(Icon)
-            .AddClass(IconClass)
+        private string _iconClass => new CssBuilder("button-icon")
+            .AddClass(Icon, !string.IsNullOrEmpty(Icon))
+            .AddClass(IconClass, !string.IsNullOrEmpty(IconClass))
             .Build();
 
         private string _htmlButtonType = string.Empty;
+        private string _classButtonSize = string.Empty;
 
-        protected override void OnInitialized()
+        protected override void OnParametersSet()
         {
-            base.OnInitialized();
-
             switch (ButtonType)
             {
-                case ButtonTypes.OnClick:
+                case ButtonType.OnClick:
                     _htmlButtonType = "button";
                     break;
 
-                case ButtonTypes.Submit:
+                case ButtonType.Submit:
                     _htmlButtonType = "submit";
                     break;
             }
+
+            switch (ButtonSize)
+            {
+                case ButtonSize.Max:
+                    _classButtonSize = "button__width_max";
+                    break;
+
+                case ButtonSize.Square:
+                    _classButtonSize = "button__width_square";
+                    break;
+
+                case ButtonSize.Small:
+                    _classButtonSize = "button__width_small";
+                    break;
+
+                case ButtonSize.Medium:
+                    _classButtonSize = "button__width_medium";
+                    break;
+
+                case ButtonSize.Large:
+                    _classButtonSize = "button__width_large";
+                    break;
+            }
+
+            base.OnParametersSet();
         }
 
         /// <summary>

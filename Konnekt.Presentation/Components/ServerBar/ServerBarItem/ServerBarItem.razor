@@ -1,11 +1,8 @@
-<div class="server-bar__item-container" onclick="">
+@using Konnekt.Presentation.Components.Button
+<div class="py-2 d-flex flex-row justify-content-center">
 
-    <div class="server-bar__item-picture">
-        <i class="fa-solid fa-earth-americas" />
-    </div>
-
-    <p class="server-bar__item-name">
-        @ServerName
-    </p>
+    <Button Icon="fa-solid fa-earth-americas"
+            Label="@ServerName"
+            ButtonSize="string.IsNullOrEmpty(ServerName) ? ButtonSize.Square : ButtonSize.Max" />
 
 </div>

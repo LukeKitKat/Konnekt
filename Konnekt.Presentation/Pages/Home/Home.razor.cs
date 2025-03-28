@@ -1,6 +1,6 @@
 ﻿using Konnect.Service.DatabaseManager.Models;
 using Konnect.Service.ServerNavigator;
-using Konnekt.Presentation.Components.MainLayout;
+using Konnekt.Presentation.Components;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -10,40 +10,18 @@ using System.Threading.Tasks;
 
 namespace Konnekt.Presentation.Pages.Home
 {
-    public partial class Home
+    public partial class Home : PresentationPageBase
     {
         [Inject]
-        private ServerNavigator ServerNavigator { get; set; } = default!;
-
-        private MainLayout MainLayout { get; set; } = default!;
-
-        private List<User> Users { get; set; } = new List<User>();
+        private ServerManager ServerNavigator { get; set; } = default!;
 
         private string? Test { get; set; }
 
-        //protected override async Task OnInitializedAsync()
-        //{
-        //    await RefreshListAsync();
-        //    await base.OnInitializedAsync();
-        //}
+        protected override Task OnAfterRenderAsync(bool firstRender)
+        {
+            var layout = Layout;
 
-        //private async Task RefreshListAsync()
-        //{
-        //    var result = await ServerNavigator.ReadServersAsync();
-
-        //    if (result.Success)
-        //        Users = result.Result!;
-        //}
-
-        //private async Task NavigateAsync()
-        //{
-        //    var result = await ServerNavigator.AddToServersAsync("Name Test");
-
-        //    if (result.Success)
-        //    {
-        //        await RefreshListAsync();
-        //        StateHasChanged();
-        //    }
-        //}
+            return base.OnAfterRenderAsync(firstRender);
+        }
     }
 }

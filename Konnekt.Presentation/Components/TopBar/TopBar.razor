@@ -1,10 +1,13 @@
-@using Konnekt.Presentation.Components.IconButton
-<div class="top-bar">
+@using Konnekt.Presentation.Components.Button
 
-    <div class="top-bar__container">
-    <p class="top-bar__company-logo">[K] - Konnekt</p>
+<div class="top-bar w-100">
 
-        <IconButton OnClick="ProfileClicked" Icon="fa-solid fa-user" />
+    <div class="top-bar-container px-4 d-flex justify-content-between align-items-center">
+
+        <p class="m-0">[K] - Konnekt</p>
+
+        <Button OnClick="ProfileClicked" ButtonSize="ButtonSize.Square" Icon="fa-solid fa-user" />
+
     </div>
 
 </div>

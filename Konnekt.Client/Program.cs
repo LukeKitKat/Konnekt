@@ -1,10 +1,10 @@
 using Konnect.Service.DatabaseManager;
 using Konnect.Service.DatabaseManager.Models;
 using Konnect.Service.ServerNavigator;
+using Konnekt.Client;
 using Konnekt.Client.Components;
 using Konnekt.Client.Components.Account;
-using Konnekt.Client.Migrations;
-using Konnekt.Presentation.Components.MainLayout;
+using Konnekt.Presentation.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -41,8 +41,7 @@ builder.Services.AddIdentityCore<User>(options => options.SignIn.RequireConfirme
     .AddDefaultTokenProviders();
 
 builder.Services.AddSingleton<IEmailSender<User>, IdentityNoOpEmailSender>();
-
-builder.Services.AddScoped<ServerNavigator, ServerNavigator>();
+builder.Services.AddScoped<ServerManager, ServerManager>();
 
 var app = builder.Build();
 
@@ -60,6 +59,7 @@ else
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseAuthorization();
 app.UseStaticFiles();
 app.UseAntiforgery();
 

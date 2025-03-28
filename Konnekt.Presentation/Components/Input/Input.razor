@@ -1,0 +1,6 @@
+@using Microsoft.AspNetCore.Components.Forms
+@inherits InputBase<T>
+@typeparam T
+
+<input type="text" @bind:get="Value" @bind:set="OnChangedHandler" />
+<ValidationMessage For="() => Value" />

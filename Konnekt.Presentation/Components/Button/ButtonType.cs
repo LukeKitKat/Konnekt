@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Konnekt.Presentation.Components.Button
 {
-    public enum ButtonTypes
+    public enum ButtonType
     {
         OnClick = 0,
         Submit = 1,

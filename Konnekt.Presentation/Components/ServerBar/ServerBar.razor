@@ -1,15 +1,31 @@
-@using Konnekt.Presentation.Components.IconButton
+@using Konnekt.Presentation.Components.Button
+@using Konnekt.Presentation.Components.Popup.Models
 @using Konnekt.Presentation.Components.ServerBar.ServerBarItem
+@using Konnekt.Presentation.Pages.Server.Joining
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.JSInterop
 
 <div class="@_serverBarClasses">
 
-    <div class="server-bar__controls">
-        
-        <IconButton Class="server-bar__controls-icon" Icon="@_collapsedClasses" OnClick="() => ToggleCollapse()" />
+    <div class="server-bar__controls d-flex flex-row-reverse justify-content-center">
+
+        <Button Icon="@_collapsedClasses"
+                Class="justify-content-center"
+                OnClick="() => ToggleCollapse()" />
 
     </div>
 
-    <div class="server-bar__container">
+    <div class="ps-2 overflow-y-auto overflow-x-hidden">
+
+        @if (Layout is not null)
+        {
+            <Button Icon="fa-solid fa-square-plus"
+                    Class="mb-1 mt-2"
+                    ButtonSize="_collapsed ? ButtonSize.Square : ButtonSize.Max"
+                    Label="@(_collapsed ? string.Empty : "Add new Konnektion")"
+                    OnClick="() => AddNewKonnektionClickedAsync()" />
+        }
+
         @foreach (var server in _servers)
         {
             <ServerBarItem ServerName="@(_collapsed ? string.Empty : server)" />

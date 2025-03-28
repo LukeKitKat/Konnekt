@@ -1,0 +1,22 @@
+﻿.popup:has(div) {
+    background-color: hsla(var(--tertiary-h), var(--tertiary-s), var(--tertiary-l), 0.5);
+}
+
+.popup-container {
+    background-color: var(--color-tertiary);
+}
+
+.popup-title {
+}
+
+.popup-body {
+}
+
+.popup-controls-confirm {
+}
+
+.popup-controls-reject {
+}
+
+.popup-controls-cancel {
+}

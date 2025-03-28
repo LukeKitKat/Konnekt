@@ -8,7 +8,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: var(--color-tertiary);
+    background-color: var(--color-pink);
     border-radius: 1rem;
     border-right: 0.75rem solid transparent;
     border-left: 0.75rem solid transparent;
@@ -16,5 +16,5 @@
 }
 
     ::-webkit-scrollbar-thumb:hover {
-        background-color: var(--color-tertiary-darken);
+        background-color: var(--color-pink-darken);
     }

@@ -1,0 +1,9 @@
+@inherits PresentationPageBase
+
+<div class="w-100 h-100 position-absolute pe-none">
+    @foreach (var popup in Popups)
+    {
+        @BuildPopup(popup.Value)
+        ;
+    }
+</div>

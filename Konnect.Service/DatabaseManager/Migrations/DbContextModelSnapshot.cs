@@ -22,6 +22,99 @@ namespace Konnekt.Client.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.Post", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("NVARCHAR(36)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("PostAuthorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PostContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(MAX)");
+
+                    b.Property<string>("PostTitle")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostAuthorId");
+
+                    b.HasIndex(new[] { "Id" }, "IX_Posts_Id")
+                        .IsUnique();
+
+                    b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.PostComment", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("NVARCHAR(36)");
+
+                    b.Property<string>("CommentAuthorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CommentContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(MAX)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CommentAuthorId");
+
+                    b.HasIndex(new[] { "Id" }, "IX_PostComments_Id")
+                        .IsUnique();
+
+                    b.ToTable("PostComments");
+                });
+
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.Server", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("NVARCHAR(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex(new[] { "Id" }, "IX_Servers_Id")
+                        .IsUnique();
+
+                    b.ToTable("Servers");
+                });
+
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("NVARCHAR(36)");
+
+                    b.Property<string>("ServerId")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR(36)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServerId");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex(new[] { "Id" }, "IX_ServerUsers_Id")
+                        .IsUnique();
+
+                    b.ToTable("ServerUsers");
+                });
+
             modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -112,6 +205,22 @@ namespace Konnekt.Client.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "743da3b6-e3a4-40fb-ae3a-6773b103ee1a",
+                            ConcurrencyStamp = "0db98047-1293-4dab-999e-b4ffe637628f",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "dc3323c1-5f95-4a9b-803f-983c5a6a537e",
+                            ConcurrencyStamp = "8cea3e20-a69e-4a32-bf80-0051018b3192",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -220,6 +329,43 @@ namespace Konnekt.Client.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.Post", b =>
+                {
+                    b.HasOne("Konnect.Service.DatabaseManager.Models.User", "PostAuthor")
+                        .WithMany()
+                        .HasForeignKey("PostAuthorId");
+
+                    b.Navigation("PostAuthor");
+                });
+
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.PostComment", b =>
+                {
+                    b.HasOne("Konnect.Service.DatabaseManager.Models.User", "CommentAuthor")
+                        .WithMany()
+                        .HasForeignKey("CommentAuthorId");
+
+                    b.Navigation("CommentAuthor");
+                });
+
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerUser", b =>
+                {
+                    b.HasOne("Konnect.Service.DatabaseManager.Models.Server", "Server")
+                        .WithMany("ServerUsers")
+                        .HasForeignKey("ServerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Konnect.Service.DatabaseManager.Models.User", "User")
+                        .WithMany("ServerUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Server");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -269,6 +415,16 @@ namespace Konnekt.Client.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.Server", b =>
+                {
+                    b.Navigation("ServerUsers");
+                });
+
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.User", b =>
+                {
+                    b.Navigation("ServerUsers");
                 });
 #pragma warning restore 612, 618
         }
