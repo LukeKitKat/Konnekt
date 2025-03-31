@@ -1,6 +1,12 @@
 @using Microsoft.AspNetCore.Components.Forms
-@inherits InputBase<T>
+@using Microsoft.AspNetCore.Components.Rendering
 @typeparam T
 
-<input type="text" @bind:get="Value" @bind:set="OnChangedHandler" />
+<label>@Label</label>
+
+@if (typeof(T) == typeof(string))
+{
+    <InputText @bind-Value="@Value" />
+}
+
 <ValidationMessage For="() => Value" />

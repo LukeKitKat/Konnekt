@@ -4,14 +4,17 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Rendering;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Konnekt.Presentation.Components.Input
 {
-    public partial class Input<T> : InputBase<T>
+    public partial class Input<T>
+        where T : class
     {
         [Parameter, EditorRequired]
         public Expression<Func<T>> For { get; set; } = default!;
@@ -19,11 +22,10 @@ namespace Konnekt.Presentation.Components.Input
         [Parameter]
         public string? Label { get; set; }
 
-        protected override bool TryParseValueFromString(string? value, out T result, out string validationErrors)
-        {
-            result = (T?)Convert.ChangeType(value, typeof(T));
-            validationErrors = null;
-            return true;
-        }
+        [Parameter]
+        public string? Value { get; set; }
+        
+        [Parameter]
+        public EventCallback<T> ValueChanged { get; set; }
     }
 }

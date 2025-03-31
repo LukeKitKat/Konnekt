@@ -17,8 +17,7 @@ namespace Konnekt.Presentation.Components.Popup.Models
         internal string? ConfirmButtonText { get; set; } = "Ok";
         internal string? RejectButtonText { get; set; } = null;
         internal string? CancelButtonText { get; set; } = "Cancel";
-        internal bool IsVisible { get; set; }
-        internal Func<bool, RenderFragment<object>?, Type?, Task<PopupResult>>? ToggleVisibilityAsync { get; set; }
+        internal bool IsVisible { get; set; }        
     }
 
     public class PopupResult

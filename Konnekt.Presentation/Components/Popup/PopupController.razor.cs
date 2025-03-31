@@ -11,30 +11,46 @@ namespace Konnekt.Presentation.Components.Popup
 {
     public partial class PopupController : PresentationPageBase
     {
-        public async Task<PopupResult> OpenPopupAsync(PopupType popupType)
-        {
-            return await Popups[popupType].ToggleVisibilityAsync!.Invoke(true, null, null);
-        }
+        [CascadingParameter]
+        private EditContext? CascadedEditContext { get; set; }
 
-        public async Task<PopupResult> OpenPopupAsync<TEditContextValue>(PopupType popupType, RenderFragment<object>? rf = null)
+        public async Task<PopupResult> OpenPopupAsync(PopupType popupType) =>
+            await RenderPopupAsync(popupType, null, null);
+
+        public async Task<PopupResult> OpenPopupAsync<TEditContextValue>(PopupType popupType, RenderFragment<object>? rf = null) =>
+            await RenderPopupAsync(popupType, rf, typeof(TEditContextValue));
+
+        private async Task<PopupResult> RenderPopupAsync(PopupType popupType, RenderFragment<object>? rf = null, Type? editContextType = null)
         {
-            return await Popups[popupType].ToggleVisibilityAsync!.Invoke(true, rf, typeof(TEditContextValue));
+            var popup = PopupRenderModels.FirstOrDefault(x => x.PopupType == popupType);
+
+            if (popup is not null)
+            {
+                if (popup.ElementReference is not null)
+                    return await popup.ElementReference.ToggleVisibilityAsync(true, rf, editContextType);
+            }
+
+            return new();
         }
 
         private RenderFragment BuildPopup(PopupModel model) => __builder =>
         {
             __builder.OpenComponent<Popup>(1);
-            __builder.AddAttribute(2, "Model", model);
-            __builder.AddAttribute(3, "RenderFragment", null as string);
+            __builder.AddAttribute(2, "PopupModel", model);
+            __builder.AddAttribute(3, "ChildContent", null as string);
             __builder.CloseComponent();
         };
 
-        private Dictionary<PopupType, PopupModel> Popups = new()
+        private List<PopupRenderModel> PopupRenderModels = new()
         {
-            [PopupType.JoinServer] = new PopupModel()
+            new()
             {
-                TitleText = "Adding Konnektion...",
-                BodyText = "Please enter the konnektion reference below: ",
+                PopupType = PopupType.JoinServer,
+                PopupModel = new PopupModel()
+                {
+                    TitleText = "Adding Konnektion...",
+                    BodyText = "Please enter the konnektion reference below: ",
+                }
             }
         };
     }

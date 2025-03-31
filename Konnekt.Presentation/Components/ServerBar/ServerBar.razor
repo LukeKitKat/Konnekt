@@ -33,3 +33,15 @@
     </div>
 
 </div>
+
+@code {
+    public RenderFragment JoiningFragment(object editContext) => __builder =>
+    {
+        if (editContext is EditContext context && context.Model is string joinCode)
+        {
+            <label>/Server/Join/</label>
+            <InputText @bind-Value="joinCode" />
+            <ValidationMessage For="() => joinCode" />
+        }
+    };
+}

@@ -1,9 +1,11 @@
+@using Microsoft.AspNetCore.Components.Forms
 @inherits PresentationPageBase
 
 <div class="w-100 h-100 position-absolute pe-none">
-    @foreach (var popup in Popups)
+    <CascadingValue TValue="EditContext" Value="CascadedEditContext">
+        @foreach (var popup in PopupRenderModels)
     {
-        @BuildPopup(popup.Value)
-        ;
+        <Popup @ref="popup.ElementReference" PopupModel="popup.PopupModel"></Popup>
     }
+    </CascadingValue>
 </div>

@@ -51,35 +51,11 @@ namespace Konnekt.Presentation.Components.ServerBar
             StateHasChanged();
         }
 
-        private RenderFragment<object> ServerCodeFragment() => model => __builder =>
-        {
-            if (model is JoiningModel joiningModel)
-            {
-                __builder.OpenElement(0, "div");
-                __builder.AddAttribute(1, "class", "d-flex flex-row");
-
-                __builder.AddMarkupContent(2, "<p>Server/Join/</p>");
-
-
-                Expression<Func<string?>> joinCodeExpression = () => joiningModel.JoinCode;
-                __builder.OpenComponent<InputText>(3);
-                __builder.AddComponentParameter(4, "Value", joiningModel.JoinCode);
-                __builder.AddComponentParameter(5, "ValueExpression", joinCodeExpression);
-                __builder.CloseComponent();
-
-                //__builder.OpenComponent<ValidationMessage<JoiningModel>>(7);
-                //__builder.AddComponentParameter(8, "For", joinCodeExpression);
-                //__builder.CloseComponent();
-
-                __builder.CloseElement();
-            }
-        };
-
         private async Task AddNewKonnektionClickedAsync()
         {
             if (Layout?.PopupController is not null)
             {
-                var result = await Layout.PopupController.OpenPopupAsync<JoiningModel>(PopupType.JoinServer, ServerCodeFragment());
+                var result = await Layout.PopupController.OpenPopupAsync<string>(PopupType.JoinServer, JoiningFragment);
                 if (result.PopupResponseState == PopupResponseState.ClosedWithConfirmation)
                 {
                     NavigationManager.NavigateTo($"/Server/Join/{result.Data}", false, true);

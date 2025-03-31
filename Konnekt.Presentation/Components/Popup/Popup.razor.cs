@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,46 +17,36 @@ namespace Konnekt.Presentation.Components.Popup
     public partial class Popup
     {
         [Parameter]
-        public PopupModel? Model { get; set; }
+        public PopupModel? PopupModel { get; set; }
         [Parameter]
-        public RenderFragment<object>? RenderFragment { get; set; }
+        public RenderFragment<object>? ChildContent { get; set; }
 
-        private EditContext EditContext { get; set; } = new EditContext(new object());
-
+        private EditContext? CascadedEditContext { get; set; }
         private CancellationTokenSource _suspensionToken = new CancellationTokenSource();
         private Action _cancelSuspension = () => { };
 
-        protected override void OnAfterRender(bool firstRender)
+        internal async Task<PopupResult> ToggleVisibilityAsync(bool state, RenderFragment<object>? rf = null, Type? editContextType = null)
         {
-            if (Model is not null && firstRender)
-            {
-                Model.ToggleVisibilityAsync += ToggleVisibilityAsync;
-            }
-
-            base.OnAfterRender(firstRender);
-        }
-
-        private async Task<PopupResult> ToggleVisibilityAsync(bool state, RenderFragment<object>? rf = null, Type? editContextType = null)
-        {
-            if (Model is not null)
+            if (PopupModel is not null)
             {
                 await Task.Run(() =>
                 {
-                    Model.IsVisible = state;
-                    
+                    PopupModel.IsVisible = state;
+
                     if (rf is not null && editContextType is not null)
                     {
-                        RenderFragment = rf;
+                        object? model = null;
 
-                        var model = Activator.CreateInstance(editContextType);
+                        if (!editContextType.Namespace?.StartsWith("System") ?? false)
+                        {
+                            model = Activator.CreateInstance(editContextType);
+                        }
+
                         if (model is null)
                             throw new NullReferenceException($"Activator tried to create an instance of {nameof(editContextType)} but no instantiation was found.");
 
-                        EditContext = new EditContext(model);
-                    }
-                    else
-                    {
-                        throw new NullReferenceException("Either a RenderFragment was provided, but the type of the EditContext model was not, or vice versa.");
+                        CascadedEditContext = new EditContext(model);
+                        ChildContent = rf;
                     }
 
                     InvokeAsync(StateHasChanged);
@@ -66,17 +58,18 @@ namespace Konnekt.Presentation.Components.Popup
                 });
             }
 
-            return Model?.Result ?? new();
+            return PopupModel?.Result ?? new();
         }
 
         private async Task PopupCloseControlClickedAsync(PopupResponseState responseState)
         {
-            if (Model is not null)
+            if (PopupModel is not null && CascadedEditContext is not null)
             {
-                if (EditContext.Validate() || responseState is not PopupResponseState.ClosedWithConfirmation)
+                if (CascadedEditContext.Validate() || responseState is not PopupResponseState.ClosedWithConfirmation)
                 {
                     _cancelSuspension.Invoke();
-                    Model.Result.PopupResponseState = responseState;
+                    PopupModel.Result.PopupResponseState = responseState;
+                    PopupModel.Result.Data = CascadedEditContext.Model;
                     await ToggleVisibilityAsync(false);
                 }
 
