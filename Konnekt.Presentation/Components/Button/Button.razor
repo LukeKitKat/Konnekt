@@ -1,3 +1,5 @@
+@inherits PresentationComponentBase
+
 <button type="@_htmlButtonType" class="@(_class)" onclick="@(() => OnClickHandler())" disabled="@Disabled">
     
     @if (!string.IsNullOrEmpty(Icon))

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Konnekt.Presentation.Components.Button
 {
-    public partial class Button
+    public partial class Button : PresentationComponentBase
     {
         [Parameter]
         public EventCallback OnClick { get; set; }

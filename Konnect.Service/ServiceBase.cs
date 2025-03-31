@@ -1,5 +1,6 @@
 ﻿using Konnect.Service.DatabaseManager;
 using Konnect.Service.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
@@ -15,7 +16,6 @@ namespace Konnect.Service
         /// <param name="method">The task to be handled.</param>
         /// <returns>The a service response containing the result and details of the given Task.</returns>
         internal async Task<ServiceResponse<T>> ExecAsync<T>(Func<KonnektContext, ServiceResponse<T>, Task<T?>> method)
-            where T : class
         {
             ServiceResponse<T> serviceResponse = new();
 
@@ -49,11 +49,13 @@ namespace Konnect.Service
 
         internal async Task<ServiceResponse> ExecAsync(Func<KonnektContext, ServiceResponse, Task> method)
         {
-            return await ExecAsync<object>(async (db, resp) =>
+            var exec = await ExecAsync<object>(async (db, resp) =>
             {
-                await Task.Delay(1);
+                await method.Invoke(db, resp);
                 return null;
             });
+
+            return exec as ServiceResponse;
         }
     }
 }

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Konnekt.Presentation.Components.ServerBar.Models
 {
-    public class JoiningServerModel
+    public class CreatingServerModel
     {
         [Required]
-        public string? JoinCode { get; set; }
+        public string? ServerName { get; set; }
     }
 }

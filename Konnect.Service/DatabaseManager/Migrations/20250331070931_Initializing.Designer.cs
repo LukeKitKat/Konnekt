@@ -4,6 +4,7 @@ using Konnect.Service.DatabaseManager;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Konnekt.Client.Migrations
 {
     [DbContext(typeof(KonnektContext))]
-    partial class DbContextModelSnapshot : ModelSnapshot
+    [Migration("20250331070931_Initializing")]
+    partial class Initializing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,10 +85,6 @@ namespace Konnekt.Client.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("NVARCHAR(36)");
 
-                    b.Property<string>("OwnerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ServerName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -98,7 +97,7 @@ namespace Konnekt.Client.Migrations
                     b.ToTable("Servers");
                 });
 
-            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerJoinCode", b =>
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerJoinCodes", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("NVARCHAR(36)");
@@ -241,14 +240,14 @@ namespace Konnekt.Client.Migrations
                         new
                         {
                             Id = "743da3b6-e3a4-40fb-ae3a-6773b103ee1a",
-                            ConcurrencyStamp = "5ff2b2af-2395-4a23-b8f2-e00bb1aa2dd2",
+                            ConcurrencyStamp = "f8c0f84f-f021-45f8-9ef3-c58f4424fd44",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "dc3323c1-5f95-4a9b-803f-983c5a6a537e",
-                            ConcurrencyStamp = "459db496-bf72-4630-b87e-60e24ee25dba",
+                            ConcurrencyStamp = "945d19cf-d496-4847-8015-2cb5d57d65c1",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -378,7 +377,7 @@ namespace Konnekt.Client.Migrations
                     b.Navigation("CommentAuthor");
                 });
 
-            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerJoinCode", b =>
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerJoinCodes", b =>
                 {
                     b.HasOne("Konnect.Service.DatabaseManager.Models.Server", "Server")
                         .WithMany("ServerJoinCodes")

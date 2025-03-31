@@ -8,6 +8,8 @@ namespace Konnekt.Presentation.Components.Popup.Models
 {
     public enum PopupType
     {
+        JoinOrCreateServer,
         JoinServer,
+        CreateServer,
     }
 }

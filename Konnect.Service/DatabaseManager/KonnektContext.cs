@@ -13,6 +13,7 @@ namespace Konnect.Service.DatabaseManager
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostComment> PostComments { get; set; }
         public DbSet<Server> Servers { get; set; }
+        public DbSet<ServerJoinCode> ServerJoinCodes { get; set; }
         public DbSet<ServerUser> ServerUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -23,14 +24,14 @@ namespace Konnect.Service.DatabaseManager
             builder.Entity<IdentityRole>().HasData(
                 new IdentityRole()
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = "743da3b6-e3a4-40fb-ae3a-6773b103ee1a",
                     Name = "Admin",
                     NormalizedName = "ADMIN",
                     ConcurrencyStamp = Guid.NewGuid().ToString()
                 },
                 new IdentityRole()
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = "dc3323c1-5f95-4a9b-803f-983c5a6a537e",
                     Name = "User",
                     NormalizedName = "USER",
                     ConcurrencyStamp = Guid.NewGuid().ToString()

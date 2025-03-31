@@ -1,45 +1,39 @@
 ﻿@using Konnekt.Presentation.Components.Button
 @using Konnekt.Presentation.Components.Popup.Models
 @using Microsoft.AspNetCore.Components.Forms
-@inherits PresentationPageBase;
+@inherits PresentationComponentBase
 
-<div id="@PopupModel?.Id" class="popup w-100 h-100 d-flex flex-column justify-content-center align-items-center">
-        @if (PopupModel?.IsVisible ?? false)
-        {
-            <div class="popup-container p-5 d-flex flex-nowrap flex-column justify-content-center align-items-center pe-auto">
+<div id="@PopupModel?.Id" class="popup w-100 h-100 d-flex flex-column justify-content-center align-items-center position-absolute">
+    @if (PopupModel?.IsVisible ?? false)
+    {
+        <div class="popup-container p-5 d-flex flex-nowrap flex-column justify-content-center align-items-center pe-auto">
 
-                @if (!string.IsNullOrEmpty(PopupModel?.TitleText))
-                {
-                    <div class="popup-title">
-                        <h3>@PopupModel.TitleText</h3>
-                    </div>
-                }
+            @if (!string.IsNullOrEmpty(PopupModel?.TitleText))
+            {
+                <div class="popup-title">
+                    <h3>@PopupModel.TitleText</h3>
+                </div>
+            }
 
-                @if (!string.IsNullOrEmpty(PopupModel?.BodyText))
-                {
-                    <div class="popup-body">
-                        <p>@PopupModel.BodyText</p>
-                    </div>
-                }
+            @if (!string.IsNullOrEmpty(PopupModel?.BodyText))
+            {
+                <div class="popup-body">
+                    <p>@PopupModel.BodyText</p>
+                </div>
+            }
 
-                <EditForm EditContext="CascadedEditContext" OnSubmit="() => PopupCloseControlClickedAsync(Models.PopupResponseState.ClosedWithConfirmation)">
+            @if (ChildContent is not null && CascadedEditContext is not null)
+            {
+                <EditForm EditContext="CascadedEditContext" OnSubmit="() => PopupCloseControlClickedAsync(Models.PopupResponseState.ClosedWithOption1)">
                     <ValidationSummary />
                     <DataAnnotationsValidator />
 
-                    @if (ChildContent is not null && CascadedEditContext is not null)
-                    {
-                        @ChildContent(CascadedEditContext)
-                    }
+                    @ChildContent(CascadedEditContext)
 
                     <div class="popup-controls w-100 d-flex">
-                        @if (!string.IsNullOrEmpty(PopupModel?.ConfirmButtonText))
+                        @if (!string.IsNullOrEmpty(PopupModel?.Option1Text))
                         {
-                            <Button Class="popup-controls-confirm m-2" Label="@PopupModel.ConfirmButtonText" ButtonType="ButtonType.Submit" />
-                        }
-
-                        @if (!string.IsNullOrEmpty(PopupModel?.RejectButtonText))
-                        {
-                            <Button Class="popup-controls-reject m-2" Label="@PopupModel.RejectButtonText" OnClick="() => PopupCloseControlClickedAsync(Models.PopupResponseState.ClosedWithRejection)" />
+                            <Button Class="popup-controls-confirm m-2" Label="@PopupModel.Option1Text" ButtonType="ButtonType.Submit" />
                         }
 
                         @if (!string.IsNullOrEmpty(PopupModel?.CancelButtonText))
@@ -48,7 +42,27 @@
                         }
                     </div>
                 </EditForm>
+            }
+            else
+            {
+                <div class="popup-controls w-100 d-flex">
+                    @if (!string.IsNullOrEmpty(PopupModel?.Option1Text))
+                    {
+                        <Button Class="popup-controls-confirm m-2" Label="@PopupModel.Option1Text" OnClick="() => PopupCloseControlClickedAsync(Models.PopupResponseState.ClosedWithOption1)" />
+                    }
 
-            </div>
-        }
+                    @if (!string.IsNullOrEmpty(PopupModel?.Option2Text))
+                    {
+                        <Button Class="popup-controls-reject m-2" Label="@PopupModel.Option2Text" OnClick="() => PopupCloseControlClickedAsync(Models.PopupResponseState.ClosedWithOption2)" />
+                    }
+
+                    @if (!string.IsNullOrEmpty(PopupModel?.CancelButtonText))
+                    {
+                        <Button Class="popup-controls-cancel m-2" Label="@PopupModel.CancelButtonText" OnClick="() => PopupCloseControlClickedAsync(Models.PopupResponseState.ClosedWithCancellation)" />
+                    }
+                </div>
+            }
+
+        </div>
+    }
 </div>

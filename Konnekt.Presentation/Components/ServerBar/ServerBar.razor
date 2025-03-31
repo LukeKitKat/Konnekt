@@ -1,10 +1,12 @@
 @using Konnekt.Presentation.Components.Button
+@using Konnekt.Presentation.Components.Input
 @using Konnekt.Presentation.Components.Popup.Models
 @using Konnekt.Presentation.Components.ServerBar.Models
 @using Konnekt.Presentation.Components.ServerBar.ServerBarItem
 @using Konnekt.Presentation.Pages.Server.Joining
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.JSInterop
+@inherits PresentationComponentBase
 
 <div class="@_serverBarClasses">
 
@@ -36,13 +38,23 @@
 </div>
 
 @code {
-    public RenderFragment JoiningFragment(object editContext) => __builder =>
+    public RenderFragment JoiningServerFragment(object editContext) => __builder =>
     {
         if (editContext is EditContext context && context.Model is JoiningServerModel jsmData)
         {
-            <label>/Server/Join/</label>
-            <InputText @bind-Value="jsmData.JoinCode" />
-            <ValidationMessage For="() => jsmData.JoinCode" />
+            <KonnektInput @bind-Value="jsmData.JoinCode"
+                          For="() => jsmData.JoinCode"
+                          Label="/Server/Join/" />
+        }
+    };
+
+    public RenderFragment CreatingServerFragment(object editContext) => __builder =>
+    {
+        if (editContext is EditContext context && context.Model is CreatingServerModel csmData)
+        {
+            <KonnektInput @bind-Value="csmData.ServerName"
+                          For="() => csmData.ServerName"
+                          Label="Server name:" />
         }
     };
 }

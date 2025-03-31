@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Konnekt.Client.Migrations
 {
     [DbContext(typeof(KonnektContext))]
-    [Migration("20250307235632_test")]
-    partial class test
+    [Migration("20250331082955_UpdatingServerOwnership")]
+    partial class UpdatingServerOwnership
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,12 +85,43 @@ namespace Konnekt.Client.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("NVARCHAR(36)");
 
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ServerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex(new[] { "Id" }, "IX_Servers_Id")
                         .IsUnique();
 
                     b.ToTable("Servers");
+                });
+
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerJoinCode", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("NVARCHAR(36)");
+
+                    b.Property<string>("JoinCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ServerId")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServerId");
+
+                    b.HasIndex(new[] { "Id" }, "IX_ServerJoinCodes_Id")
+                        .IsUnique();
+
+                    b.ToTable("ServerJoinCodes");
                 });
 
             modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerUser", b =>
@@ -213,14 +244,14 @@ namespace Konnekt.Client.Migrations
                         new
                         {
                             Id = "743da3b6-e3a4-40fb-ae3a-6773b103ee1a",
-                            ConcurrencyStamp = "0db98047-1293-4dab-999e-b4ffe637628f",
+                            ConcurrencyStamp = "5ff2b2af-2395-4a23-b8f2-e00bb1aa2dd2",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "dc3323c1-5f95-4a9b-803f-983c5a6a537e",
-                            ConcurrencyStamp = "8cea3e20-a69e-4a32-bf80-0051018b3192",
+                            ConcurrencyStamp = "459db496-bf72-4630-b87e-60e24ee25dba",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -350,6 +381,17 @@ namespace Konnekt.Client.Migrations
                     b.Navigation("CommentAuthor");
                 });
 
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerJoinCode", b =>
+                {
+                    b.HasOne("Konnect.Service.DatabaseManager.Models.Server", "Server")
+                        .WithMany("ServerJoinCodes")
+                        .HasForeignKey("ServerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Server");
+                });
+
             modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerUser", b =>
                 {
                     b.HasOne("Konnect.Service.DatabaseManager.Models.Server", "Server")
@@ -422,6 +464,8 @@ namespace Konnekt.Client.Migrations
 
             modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.Server", b =>
                 {
+                    b.Navigation("ServerJoinCodes");
+
                     b.Navigation("ServerUsers");
                 });
 

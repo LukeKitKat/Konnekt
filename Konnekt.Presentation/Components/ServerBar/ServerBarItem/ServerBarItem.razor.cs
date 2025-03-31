@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Konnekt.Presentation.Components.ServerBar.ServerBarItem
 {
-    public partial class ServerBarItem
+    public partial class ServerBarItem : PresentationComponentBase
     {
         [Parameter]
         public string ServerName { get; set; } = string.Empty;

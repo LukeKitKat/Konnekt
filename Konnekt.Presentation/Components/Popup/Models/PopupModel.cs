@@ -14,8 +14,8 @@ namespace Konnekt.Presentation.Components.Popup.Models
         //
         internal string? TitleText { get; set; } = null;
         internal string? BodyText { get; set; } = null;
-        internal string? ConfirmButtonText { get; set; } = "Ok";
-        internal string? RejectButtonText { get; set; } = null;
+        internal string? Option1Text { get; set; } = "Ok";
+        internal string? Option2Text { get; set; } = null;
         internal string? CancelButtonText { get; set; } = "Cancel";
         internal bool IsVisible { get; set; }        
     }

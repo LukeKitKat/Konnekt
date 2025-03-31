@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Konnekt.Presentation.Components.Popup
 {
-    public partial class Popup
+    public partial class Popup : PresentationComponentBase
     {
         [Parameter]
         public PopupModel? PopupModel { get; set; }
@@ -27,53 +27,56 @@ namespace Konnekt.Presentation.Components.Popup
 
         internal async Task<PopupResult> ToggleVisibilityAsync(bool state, RenderFragment<object>? rf = null, Type? editContextType = null)
         {
-            if (PopupModel is not null)
+            if (PopupModel is null)
+                return new();
+
+            await Task.Run(() =>
             {
-                await Task.Run(() =>
+                PopupModel.IsVisible = state;
+
+                if (rf is not null && editContextType is not null)
                 {
-                    PopupModel.IsVisible = state;
+                    object? model = null;
 
-                    if (rf is not null && editContextType is not null)
+                    if (!editContextType.Namespace?.StartsWith("System") ?? false)
                     {
-                        object? model = null;
-
-                        if (!editContextType.Namespace?.StartsWith("System") ?? false)
-                        {
-                            model = Activator.CreateInstance(editContextType);
-                        }
-
-                        if (model is null)
-                            throw new NullReferenceException($"Activator tried to create an instance of {nameof(editContextType)} but no instantiation was found.");
-
-                        CascadedEditContext = new EditContext(model);
-                        ChildContent = rf;
+                        model = Activator.CreateInstance(editContextType);
                     }
 
-                    InvokeAsync(StateHasChanged);
+                    if (model is null)
+                        throw new NullReferenceException($"Activator tried to create an instance of {nameof(editContextType)} but no instantiation was found.");
 
-                    while (!_suspensionToken.IsCancellationRequested)
-                    {
-                        _cancelSuspension = _suspensionToken.Cancel;
-                    }
-                });
-            }
+                    CascadedEditContext = new EditContext(model);
+                    ChildContent = rf;
+                }
 
-            return PopupModel?.Result ?? new();
+                InvokeAsync(StateHasChanged);
+
+                while (!_suspensionToken.IsCancellationRequested)
+                {
+                    _cancelSuspension = _suspensionToken.Cancel;
+                }
+            });
+
+            return PopupModel.Result;
         }
 
         private async Task PopupCloseControlClickedAsync(PopupResponseState responseState)
         {
-            if (PopupModel is not null && CascadedEditContext is not null)
+            if (PopupModel is not null)
             {
-                if (CascadedEditContext.Validate() || responseState is not PopupResponseState.ClosedWithConfirmation)
+                if (CascadedEditContext is not null)
                 {
-                    _cancelSuspension.Invoke();
-                    PopupModel.Result.PopupResponseState = responseState;
-                    PopupModel.Result.Data = CascadedEditContext.Model;
-                    await ToggleVisibilityAsync(false);
+                    if (CascadedEditContext.Validate())
+                        PopupModel.Result.Data = CascadedEditContext.Model;
+                    else
+                        return;
                 }
 
-                StateHasChanged();
+                PopupModel.Result.PopupResponseState = responseState;
+
+                _cancelSuspension.Invoke();
+                await ToggleVisibilityAsync(false);
             }
         }
     }

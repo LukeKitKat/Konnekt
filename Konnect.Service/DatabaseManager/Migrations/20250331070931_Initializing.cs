@@ -8,9 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Konnekt.Client.Migrations
 {
     /// <inheritdoc />
-#pragma warning disable CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
-    public partial class test : Migration
-#pragma warning restore CS8981 // The type name only contains lower-cased ascii characters. Such names may become reserved for the language.
+    public partial class Initializing : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -58,11 +56,31 @@ namespace Konnekt.Client.Migrations
                 name: "Servers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "NVARCHAR(36)", nullable: false)
+                    Id = table.Column<string>(type: "NVARCHAR(36)", nullable: false),
+                    ServerName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Servers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ServerJoinCodes",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "NVARCHAR(36)", nullable: false),
+                    JoinCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ServerId = table.Column<string>(type: "NVARCHAR(36)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ServerJoinCodes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ServerJoinCodes_Servers_ServerId",
+                        column: x => x.ServerId,
+                        principalTable: "Servers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -95,8 +113,8 @@ namespace Konnekt.Client.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "743da3b6-e3a4-40fb-ae3a-6773b103ee1a", "0db98047-1293-4dab-999e-b4ffe637628f", "Admin", "ADMIN" },
-                    { "dc3323c1-5f95-4a9b-803f-983c5a6a537e", "8cea3e20-a69e-4a32-bf80-0051018b3192", "User", "USER" }
+                    { "743da3b6-e3a4-40fb-ae3a-6773b103ee1a", "f8c0f84f-f021-45f8-9ef3-c58f4424fd44", "Admin", "ADMIN" },
+                    { "dc3323c1-5f95-4a9b-803f-983c5a6a537e", "945d19cf-d496-4847-8015-2cb5d57d65c1", "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -120,6 +138,17 @@ namespace Konnekt.Client.Migrations
                 name: "IX_Posts_PostAuthorId",
                 table: "Posts",
                 column: "PostAuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServerJoinCodes_Id",
+                table: "ServerJoinCodes",
+                column: "Id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ServerJoinCodes_ServerId",
+                table: "ServerJoinCodes",
+                column: "ServerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Servers_Id",
@@ -152,6 +181,9 @@ namespace Konnekt.Client.Migrations
 
             migrationBuilder.DropTable(
                 name: "Posts");
+
+            migrationBuilder.DropTable(
+                name: "ServerJoinCodes");
 
             migrationBuilder.DropTable(
                 name: "ServerUsers");

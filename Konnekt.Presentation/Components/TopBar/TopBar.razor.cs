@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Konnekt.Presentation.Components.TopBar
 {
-    public partial class TopBar
+    public partial class TopBar : PresentationComponentBase
     {
         [Inject]
         private NavigationManager NavigationManager { get; set; } = default!;

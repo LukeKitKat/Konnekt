@@ -9,8 +9,8 @@ namespace Konnekt.Presentation.Components.Popup.Models
     public enum PopupResponseState
     {
         None = 1,
-        ClosedWithConfirmation = 2,
-        ClosedWithRejection = 3,
+        ClosedWithOption1 = 2,
+        ClosedWithOption2 = 3,
         ClosedWithCancellation = 4,
     }
 }

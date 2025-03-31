@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Konnekt.Presentation.Components.Popup
 {
-    public partial class PopupController : PresentationPageBase
+    public partial class PopupController : PresentationComponentBase
     {
         [CascadingParameter]
-        private EditContext? CascadedEditContext { get; set; }
+        public EditContext? CascadedEditContext { get; set; }
 
         public async Task<PopupResult> OpenPopupAsync(PopupType popupType) =>
             await RenderPopupAsync(popupType, null, null);
@@ -33,23 +33,35 @@ namespace Konnekt.Presentation.Components.Popup
             return new();
         }
 
-        private RenderFragment BuildPopup(PopupModel model) => __builder =>
-        {
-            __builder.OpenComponent<Popup>(1);
-            __builder.AddAttribute(2, "PopupModel", model);
-            __builder.AddAttribute(3, "ChildContent", null as string);
-            __builder.CloseComponent();
-        };
-
         private List<PopupRenderModel> PopupRenderModels = new()
         {
+            new()
+            {
+                PopupType = PopupType.JoinOrCreateServer,
+                PopupModel = new PopupModel()
+                {
+                    TitleText = "Adding a new Konnektion",
+                    BodyText = "Please select whether you wish to create a new Konnektion or join an existing one.",
+                    Option1Text = "Join",
+                    Option2Text = "Create",
+                }
+            },
             new()
             {
                 PopupType = PopupType.JoinServer,
                 PopupModel = new PopupModel()
                 {
-                    TitleText = "Adding Konnektion...",
-                    BodyText = "Please enter the konnektion reference below: ",
+                    TitleText = "Joining existing Konnektion",
+                    BodyText = $"Please enter the Konnektion reference. {Environment.NewLine} (References are case sensitive).",
+                }
+            },
+            new()
+            {
+                PopupType = PopupType.CreateServer,
+                PopupModel = new PopupModel()
+                {
+                    TitleText = "Creating new Konnektion",
+                    BodyText = "Please enter a name for the Konnektion.",
                 }
             }
         };

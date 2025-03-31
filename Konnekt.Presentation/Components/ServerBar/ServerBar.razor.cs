@@ -1,10 +1,14 @@
 ﻿using BlazorComponentUtilities;
+using Konnect.Service.DatabaseManager.Models;
+using Konnect.Service.ServerNavigator;
 using Konnekt.Presentation.Components.Input;
 using Konnekt.Presentation.Components.Popup.Models;
 using Konnekt.Presentation.Components.ServerBar.Models;
 using Konnekt.Presentation.Pages.Server.Joining;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
@@ -17,13 +21,17 @@ using System.Threading.Tasks;
 
 namespace Konnekt.Presentation.Components.ServerBar
 {
-    public partial class ServerBar
+    public partial class ServerBar : PresentationComponentBase
     {
-        [CascadingParameter]
-        public MainLayout? Layout { get; set; }
-
         [Inject]
         private NavigationManager NavigationManager { get; set; } = default!;
+        [Inject]
+        private ServerManager ServerManager { get; set; } = default!;
+        [Inject]
+        private UserManager<User> UserManager { get; set; } = default!;
+        [Inject]
+        private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+
 
         private bool _collapsed = true;
         private string _collapsedClasses => new CssBuilder("fa-regular")
@@ -56,11 +64,43 @@ namespace Konnekt.Presentation.Components.ServerBar
         {
             if (Layout?.PopupController is not null)
             {
-                var result = await Layout.PopupController.OpenPopupAsync<JoiningServerModel>(PopupType.JoinServer, JoiningFragment);
-                if (result.PopupResponseState == PopupResponseState.ClosedWithConfirmation && result.Data is JoiningServerModel jsmData)
+                var joinOrCreatingResult = await Layout.PopupController.OpenPopupAsync(PopupType.JoinOrCreateServer);
+                if (joinOrCreatingResult.PopupResponseState is PopupResponseState.None or PopupResponseState.ClosedWithCancellation)
+                    return;
+
+                string serverId = string.Empty;
+                var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+                var user = await UserManager.GetUserAsync(state.User);
+
+                if (joinOrCreatingResult.PopupResponseState is PopupResponseState.ClosedWithOption1)
                 {
-                    NavigationManager.NavigateTo($"/Server/Join/{jsmData.JoinCode}", false, true);
+                    var joiningResult = await Layout.PopupController.OpenPopupAsync<JoiningServerModel>(PopupType.JoinServer, JoiningServerFragment);
+                    
+                    if (joiningResult.Data is JoiningServerModel jsmData)
+                    {
+                        var serverResp = await ServerManager.AddUserToServerAsync(jsmData.JoinCode, user);
+                        if (!serverResp.Success)
+                            return;
+
+                        serverId = serverResp.Result.Id;
+                    }
                 }
+                else if (joinOrCreatingResult.PopupResponseState is PopupResponseState.ClosedWithOption2)
+                {                    
+                    var creatingResult = await Layout.PopupController.OpenPopupAsync<CreatingServerModel>(PopupType.CreateServer, CreatingServerFragment);
+
+                    if (creatingResult.Data is CreatingServerModel csmData)
+                    {
+                        var serverResp = await ServerManager.CreateNewServerAsync(csmData.ServerName!, user);
+                        if (!serverResp.Success)
+                            return;
+
+                        serverId = serverResp.Result.Id;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(serverId))
+                    NavigationManager.NavigateTo($"/Server/{serverId}");
             }
         }
     }
