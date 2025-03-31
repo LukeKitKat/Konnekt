@@ -1,6 +1,7 @@
 ﻿using BlazorComponentUtilities;
 using Konnekt.Presentation.Components.Input;
 using Konnekt.Presentation.Components.Popup.Models;
+using Konnekt.Presentation.Components.ServerBar.Models;
 using Konnekt.Presentation.Pages.Server.Joining;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -55,10 +56,10 @@ namespace Konnekt.Presentation.Components.ServerBar
         {
             if (Layout?.PopupController is not null)
             {
-                var result = await Layout.PopupController.OpenPopupAsync<string>(PopupType.JoinServer, JoiningFragment);
-                if (result.PopupResponseState == PopupResponseState.ClosedWithConfirmation)
+                var result = await Layout.PopupController.OpenPopupAsync<JoiningServerModel>(PopupType.JoinServer, JoiningFragment);
+                if (result.PopupResponseState == PopupResponseState.ClosedWithConfirmation && result.Data is JoiningServerModel jsmData)
                 {
-                    NavigationManager.NavigateTo($"/Server/Join/{result.Data}", false, true);
+                    NavigationManager.NavigateTo($"/Server/Join/{jsmData.JoinCode}", false, true);
                 }
             }
         }

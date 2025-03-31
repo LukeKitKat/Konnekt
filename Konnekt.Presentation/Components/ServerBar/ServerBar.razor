@@ -1,5 +1,6 @@
 @using Konnekt.Presentation.Components.Button
 @using Konnekt.Presentation.Components.Popup.Models
+@using Konnekt.Presentation.Components.ServerBar.Models
 @using Konnekt.Presentation.Components.ServerBar.ServerBarItem
 @using Konnekt.Presentation.Pages.Server.Joining
 @using Microsoft.AspNetCore.Components.Forms
@@ -37,11 +38,11 @@
 @code {
     public RenderFragment JoiningFragment(object editContext) => __builder =>
     {
-        if (editContext is EditContext context && context.Model is string joinCode)
+        if (editContext is EditContext context && context.Model is JoiningServerModel jsmData)
         {
             <label>/Server/Join/</label>
-            <InputText @bind-Value="joinCode" />
-            <ValidationMessage For="() => joinCode" />
+            <InputText @bind-Value="jsmData.JoinCode" />
+            <ValidationMessage For="() => jsmData.JoinCode" />
         }
     };
 }
