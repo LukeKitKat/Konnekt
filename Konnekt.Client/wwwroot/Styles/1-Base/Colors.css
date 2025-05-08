@@ -9,12 +9,12 @@
     --secondary-h: 358;
     --secondary-s: 62%;
     --secondary-l: 32%;
-    /*[TERTIARY] Color: Grey - #787f82 - rgb(120, 127, 130)*/
+    /*[TERTIARY] Color: Grey - #313435 - rgb(49, 52, 53)*/
     --color-tertiary: hsl(var(--tertiary-h), var(--tertiary-s), var(--tertiary-l));
     --color-tertiary-darken: hsl(var(--tertiary-h), var(--tertiary-s), calc(var(--tertiary-l) * var(--darken-mod)));
-    --tertiary-h: 195;
+    --tertiary-h: 198;
     --tertiary-s: 4%;
-    --tertiary-l: 49%;
+    --tertiary-l: 20%;
     /*[INTERACTIONS] Color: Pink - #b64362 - rgb(182, 67, 98)*/
     --color-pink: hsl(var(--pink-h), var(--pink-s), var(--pink-l));
     --color-pink-darken: hsl(var(--pink-h), var(--pink-s), calc(var(--pink-l) * var(--darken-mod)));

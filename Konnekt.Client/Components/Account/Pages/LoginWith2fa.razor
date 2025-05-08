@@ -72,6 +72,7 @@
 
         if (result.Succeeded)
         {
+            ReturnUrl = "/";
             Logger.LogInformation("User with ID '{UserId}' logged in with 2fa.", userId);
             RedirectManager.RedirectTo(ReturnUrl);
         }

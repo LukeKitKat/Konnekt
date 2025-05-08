@@ -1,7 +1,10 @@
-﻿@using Konnekt.Presentation.Components.Button
+﻿@using Konnekt.Presentation.Components
+@using Konnekt.Presentation.Components.Base
+@using Konnekt.Presentation.Components.KonnektButton
+@using Konnekt.Presentation.Components.KonnektButton.Models
 @using Konnekt.Presentation.Components.Popup.Models
 @using Microsoft.AspNetCore.Components.Forms
-@inherits PresentationComponentBase
+@inherits PresentationBase
 
 <div id="@PopupModel?.Id" class="popup w-100 h-100 d-flex flex-column justify-content-center align-items-center position-absolute">
     @if (PopupModel?.IsVisible ?? false)
@@ -30,35 +33,51 @@
 
                     @ChildContent(CascadedEditContext)
 
-                    <div class="popup-controls w-100 d-flex">
+                    <div class="popup-controls w-100 d-flex justify-content-center">
                         @if (!string.IsNullOrEmpty(PopupModel?.Option1Text))
                         {
-                            <Button Class="popup-controls-confirm m-2" Label="@PopupModel.Option1Text" ButtonType="ButtonType.Submit" />
+                            <KonnektButton Class="popup-controls-confirm m-2"
+                                           Label="@PopupModel.Option1Text"
+                                           ButtonType="ButtonType.Submit"
+                                           ButtonSize="ButtonSize.Medium" />
                         }
 
                         @if (!string.IsNullOrEmpty(PopupModel?.CancelButtonText))
                         {
-                            <Button Class="popup-controls-cancel m-2" Label="@PopupModel.CancelButtonText" OnClick="() => PopupCloseControlClickedAsync(Models.PopupResponseState.ClosedWithCancellation)" />
+                            <KonnektButton Class="popup-controls-cancel m-2"
+                                           Label="@PopupModel.CancelButtonText"
+                                           OnClick="() => PopupCloseControlClickedAsync(Models.PopupResponseState.ClosedWithCancellation)"
+                                           ButtonSize="ButtonSize.Medium" />
                         }
                     </div>
                 </EditForm>
             }
-            else
+
+            @if (ChildContent is null)
             {
-                <div class="popup-controls w-100 d-flex">
+                <div class="popup-controls w-100 d-flex justify-content-center">
                     @if (!string.IsNullOrEmpty(PopupModel?.Option1Text))
                     {
-                        <Button Class="popup-controls-confirm m-2" Label="@PopupModel.Option1Text" OnClick="() => PopupCloseControlClickedAsync(Models.PopupResponseState.ClosedWithOption1)" />
+                        <KonnektButton Class="popup-controls-confirm m-2"
+                                       Label="@PopupModel.Option1Text"
+                                       OnClick="() => PopupCloseControlClickedAsync(Models.PopupResponseState.ClosedWithOption1)"
+                                       ButtonSize="ButtonSize.Medium" />
                     }
 
                     @if (!string.IsNullOrEmpty(PopupModel?.Option2Text))
                     {
-                        <Button Class="popup-controls-reject m-2" Label="@PopupModel.Option2Text" OnClick="() => PopupCloseControlClickedAsync(Models.PopupResponseState.ClosedWithOption2)" />
+                        <KonnektButton Class="popup-controls-reject m-2"
+                                       Label="@PopupModel.Option2Text"
+                                       OnClick="() => PopupCloseControlClickedAsync(Models.PopupResponseState.ClosedWithOption2)"
+                                       ButtonSize="ButtonSize.Medium" />
                     }
 
                     @if (!string.IsNullOrEmpty(PopupModel?.CancelButtonText))
                     {
-                        <Button Class="popup-controls-cancel m-2" Label="@PopupModel.CancelButtonText" OnClick="() => PopupCloseControlClickedAsync(Models.PopupResponseState.ClosedWithCancellation)" />
+                        <KonnektButton Class="popup-controls-cancel m-2"
+                                       Label="@PopupModel.CancelButtonText"
+                                       OnClick="() => PopupCloseControlClickedAsync(Models.PopupResponseState.ClosedWithCancellation)"
+                                       ButtonSize="ButtonSize.Medium" />
                     }
                 </div>
             }

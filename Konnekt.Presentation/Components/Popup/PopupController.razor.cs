@@ -1,4 +1,5 @@
-﻿using Konnekt.Presentation.Components.Popup.Models;
+﻿using Konnekt.Presentation.Components.Base;
+using Konnekt.Presentation.Components.Popup.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Konnekt.Presentation.Components.Popup
 {
-    public partial class PopupController : PresentationComponentBase
+    public partial class PopupController : PresentationBase
     {
         [CascadingParameter]
         public EditContext? CascadedEditContext { get; set; }
@@ -26,6 +27,8 @@ namespace Konnekt.Presentation.Components.Popup
 
             if (popup is not null)
             {
+                popup.PopupModel.Result.PopupResponseState = PopupResponseState.None;
+
                 if (popup.ElementReference is not null)
                     return await popup.ElementReference.ToggleVisibilityAsync(true, rf, editContextType);
             }
@@ -62,6 +65,15 @@ namespace Konnekt.Presentation.Components.Popup
                 {
                     TitleText = "Creating new Konnektion",
                     BodyText = "Please enter a name for the Konnektion.",
+                }
+            },
+            new()
+            {
+                PopupType = PopupType.CreateChannel,
+                PopupModel = new PopupModel()
+                {
+                    TitleText = "Creating new Channel",
+                    BodyText = "Please enter a name for the Channel.",
                 }
             }
         };

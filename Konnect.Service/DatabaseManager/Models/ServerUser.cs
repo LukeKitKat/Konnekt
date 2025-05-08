@@ -23,5 +23,7 @@ namespace Konnect.Service.DatabaseManager.Models
         [ForeignKey(nameof(Server))]
         public string ServerId { get; set; } = string.Empty;
         public virtual Server? Server { get; set; }
+
+        public int ServerOrder { get; set; }
     }
 }

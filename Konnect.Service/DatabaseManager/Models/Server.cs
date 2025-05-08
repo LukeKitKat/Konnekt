@@ -26,6 +26,7 @@ namespace Konnect.Service.DatabaseManager.Models
         #region Relationships
         public virtual ICollection<ServerUser> ServerUsers { get; set; } = [];
         public virtual ICollection<ServerJoinCode> ServerJoinCodes { get; set; } = [];
+        public virtual ICollection<ServerChannel> ServerChannels { get; set; } = [];
         #endregion
     }
 }

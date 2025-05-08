@@ -60,6 +60,7 @@
 
         if (result.Succeeded)
         {
+            ReturnUrl = "/";
             Logger.LogInformation("User with ID '{UserId}' logged in with a recovery code.", userId);
             RedirectManager.RedirectTo(ReturnUrl);
         }

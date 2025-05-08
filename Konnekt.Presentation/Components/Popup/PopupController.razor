@@ -1,11 +1,14 @@
+@using Konnekt.Presentation.Components
+@using Konnekt.Presentation.Components.Base
+@using Konnekt.Presentation.Components.Popup
 @using Microsoft.AspNetCore.Components.Forms
-@inherits PresentationComponentBase
+@inherits PresentationBase
 
 <div class="w-100 h-100 position-absolute pe-none">
     <CascadingValue TValue="EditContext" Value="CascadedEditContext">
         @foreach (var popup in PopupRenderModels)
     {
-        <Popup @ref="popup.ElementReference" PopupModel="popup.PopupModel"></Popup>
+        <Popup @ref="popup.ElementReference" PopupModel="popup.PopupModel" />
     }
     </CascadingValue>
 </div>

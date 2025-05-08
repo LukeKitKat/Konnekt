@@ -11,5 +11,6 @@ namespace Konnekt.Presentation.Components.Popup.Models
         JoinOrCreateServer,
         JoinServer,
         CreateServer,
+        CreateChannel,
     }
 }

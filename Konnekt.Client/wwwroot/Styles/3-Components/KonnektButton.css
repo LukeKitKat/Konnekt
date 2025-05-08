@@ -1,0 +1,34 @@
+﻿.konnekt-button {
+    /**/
+    height: 3rem;
+    width: var(--button--width);
+    background-color: var(--color-pink);
+}
+
+    .konnekt-button:hover {
+        background-color: var(--color-pink-darken);
+    }
+
+/*#region Width Modifiers*/
+
+.konnekt-button__width_max {
+    --button--width: 100%;
+}
+
+.konnekt-button__width_square {
+    --button--width: 3rem;
+}
+
+.konnekt-button__width_small {
+    --button--width: 5rem;
+}
+
+.konnekt-button__width_medium {
+    --button--width: 7rem;
+}
+
+.konnekt-button__width_large {
+    --button--width: 9rem;
+}
+
+/*#endregion*/

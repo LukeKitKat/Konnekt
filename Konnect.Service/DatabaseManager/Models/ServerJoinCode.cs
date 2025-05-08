@@ -14,6 +14,8 @@ namespace Konnect.Service.DatabaseManager.Models
     [PrimaryKey(nameof(Id))]
     public class ServerJoinCode : EntityBase
     {
+        [Column(TypeName = "nvarchar(8)")]
+        [MaxLength(8)]
         public string JoinCode { get; set; } = string.Empty;
 
         [Key]

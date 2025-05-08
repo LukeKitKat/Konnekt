@@ -24,4 +24,8 @@
     <ProjectReference Include="..\Konnect.Service\Konnect.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Konnektion\Main\Models\" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,15 @@
+@using Konnekt.Presentation.Components
+@using Konnekt.Presentation.Components.Base
+@using Konnekt.Presentation.Components.KonnektIcon
+@inherits PresentationBase
+
+<button type="@_htmlButtonType" class="@(_class)" onclick="@(() => OnClickHandler())" disabled="@Disabled">
+    
+    @if (!string.IsNullOrEmpty(Icon))
+    {
+        <KonnektIcon Icon="@Icon" IconClass="@IconClass"/>
+    }
+
+    <label class="@(_labelClass)">@Label</label>
+
+</button>

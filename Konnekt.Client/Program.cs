@@ -1,13 +1,16 @@
+using Konnect.Service.ActivityObserver;
 using Konnect.Service.DatabaseManager;
 using Konnect.Service.DatabaseManager.Models;
 using Konnect.Service.ServerNavigator;
 using Konnekt.Client;
 using Konnekt.Client.Components;
 using Konnekt.Client.Components.Account;
-using Konnekt.Presentation.Components;
+using Konnekt.Presentation.Components.Layout;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,8 +34,9 @@ builder.Services.AddAuthentication(options =>
     .AddIdentityCookies();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<KonnektContext>(options =>
+builder.Services.AddDbContextFactory<KonnektContext>(options =>
     options.UseSqlServer(connectionString));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -42,6 +46,7 @@ builder.Services.AddIdentityCore<User>(options => options.SignIn.RequireConfirme
 
 builder.Services.AddSingleton<IEmailSender<User>, IdentityNoOpEmailSender>();
 builder.Services.AddScoped<ServerManager, ServerManager>();
+builder.Services.AddSingleton<ActivityObserver, ActivityObserver>();
 
 var app = builder.Build();
 
@@ -50,12 +55,11 @@ if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
 }
-else
-{
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
+
+app.UseExceptionHandler("/Error", createScopeForErrors: true);
+// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+app.UseHsts();
+
 
 app.UseHttpsRedirection();
 app.UseRouting();

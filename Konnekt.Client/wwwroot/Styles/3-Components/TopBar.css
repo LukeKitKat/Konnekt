@@ -3,6 +3,14 @@
     border-bottom: var(--border-standard);
 }
 
-.top-bar-container {
+.top-bar__container {
     height: inherit;
 }
+
+.top-bar__user-controls {
+    width: fit-content;
+}
+
+    .top-bar__user-controls > p {
+        width: inherit;
+    }

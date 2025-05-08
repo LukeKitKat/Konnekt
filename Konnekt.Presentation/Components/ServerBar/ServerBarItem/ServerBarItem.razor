@@ -1,10 +1,13 @@
-@using Konnekt.Presentation.Components.Button
-@inherits PresentationComponentBase
+@using Konnekt.Presentation.Components.Base
+@using Konnekt.Presentation.Components.KonnektButton
+@using Konnekt.Presentation.Components.KonnektButton.Models
+@inherits PresentationBase
 
 <div class="py-2 d-flex flex-row justify-content-center">
 
-    <Button Icon="fa-solid fa-earth-americas"
-            Label="@ServerName"
-            ButtonSize="string.IsNullOrEmpty(ServerName) ? ButtonSize.Square : ButtonSize.Max" />
+    <KonnektButton Icon="fa-solid fa-earth-americas"
+            OnClick="OnServerClicked"
+            Label="@(RenderServerName ? Server.ServerName : string.Empty)"
+            ButtonSize="string.IsNullOrEmpty(Server.ServerName) ? ButtonSize.Square : ButtonSize.Max" />
 
 </div>

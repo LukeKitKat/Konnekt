@@ -1,63 +1,53 @@
 ﻿using BlazorComponentUtilities;
 using Konnect.Service.DatabaseManager.Models;
 using Konnect.Service.ServerNavigator;
-using Konnekt.Presentation.Components.Input;
+using Konnekt.Presentation.Components.Base;
 using Konnekt.Presentation.Components.Popup.Models;
 using Konnekt.Presentation.Components.ServerBar.Models;
-using Konnekt.Presentation.Pages.Server.Joining;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Konnekt.Presentation.Components.ServerBar
 {
-    public partial class ServerBar : PresentationComponentBase
+    public partial class ServerBar : PresentationBase
     {
         [Inject]
-        private NavigationManager NavigationManager { get; set; } = default!;
-        [Inject]
         private ServerManager ServerManager { get; set; } = default!;
-        [Inject]
-        private UserManager<User> UserManager { get; set; } = default!;
-        [Inject]
-        private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
 
 
-        private bool _collapsed = true;
-        private string _collapsedClasses => new CssBuilder("fa-regular")
+        private bool _collapsed = false;
+        private string CollapsedClasses => new CssBuilder("fa-regular")
             .AddClass("fa-square-caret-left", _collapsed == false)
             .AddClass("fa-square-caret-right", _collapsed == true)
             .Build();
 
-        private string _serverBarClasses => new CssBuilder("server-bar")
+        private string ServerBarClasses => new CssBuilder("server-bar")
             .AddClass("server-bar--collapsed", _collapsed == true)
             .AddClass("d-flex flex-column")
             .Build();
 
-        private List<string> _servers = new List<string>();
+        private List<Server> _servers = [];
 
-        public ServerBar()
+        protected override async Task OnInitializedAsync()
         {
-            _servers.Add("MASSIVE SERVER NAME AAAAAAAAAAAAAA");
-
-            for (int i = 0; i < 25; i++)
-                _servers.Add($"Server Number {i + 1}");
+            await PopulateServerListAsync();
+            await base.OnInitializedAsync();
         }
 
         private void ToggleCollapse()
         {
             _collapsed = !_collapsed;
             StateHasChanged();
+        }
+
+        private async Task PopulateServerListAsync()
+        {
+            User? user = await GetCurrentUserAsync();
+            var resp = ServiceHandler(await ServerManager.GetUserServersAsync(user));
+            if (!resp.Success)
+                return;
+
+            _servers = resp.Result!;
+            StateHasChanged(); 
         }
 
         private async Task AddNewKonnektionClickedAsync()
@@ -69,8 +59,7 @@ namespace Konnekt.Presentation.Components.ServerBar
                     return;
 
                 string serverId = string.Empty;
-                var state = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-                var user = await UserManager.GetUserAsync(state.User);
+                User? user = await GetCurrentUserAsync();
 
                 if (joinOrCreatingResult.PopupResponseState is PopupResponseState.ClosedWithOption1)
                 {
@@ -78,11 +67,11 @@ namespace Konnekt.Presentation.Components.ServerBar
                     
                     if (joiningResult.Data is JoiningServerModel jsmData)
                     {
-                        var serverResp = await ServerManager.AddUserToServerAsync(jsmData.JoinCode, user);
+                        var serverResp = ServiceHandler(await ServerManager.AddUserToServerAsync(jsmData.JoinCode, user));
                         if (!serverResp.Success)
                             return;
 
-                        serverId = serverResp.Result.Id;
+                        serverId = serverResp.Result!.Id;
                     }
                 }
                 else if (joinOrCreatingResult.PopupResponseState is PopupResponseState.ClosedWithOption2)
@@ -91,13 +80,15 @@ namespace Konnekt.Presentation.Components.ServerBar
 
                     if (creatingResult.Data is CreatingServerModel csmData)
                     {
-                        var serverResp = await ServerManager.CreateNewServerAsync(csmData.ServerName!, user);
+                        var serverResp = ServiceHandler(await ServerManager.CreateNewServerAsync(csmData.ServerName!, user));
                         if (!serverResp.Success)
                             return;
 
-                        serverId = serverResp.Result.Id;
+                        serverId = serverResp.Result!.Id;
                     }
                 }
+
+                await PopulateServerListAsync();
 
                 if (!string.IsNullOrEmpty(serverId))
                     NavigationManager.NavigateTo($"/Server/{serverId}");

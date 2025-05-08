@@ -1,0 +1,13 @@
+﻿.konnekt-icon {
+    font-size: var(--konnekt-icon--width);
+    width: var(--konnekt-icon--width);
+    padding: 0;
+}
+
+.konnekt-icon__width_small {
+    --konnekt-icon--width: 2rem;
+}
+
+.konnekt-icon__width_medium {
+    --konnekt-icon--width: 4rem;
+}

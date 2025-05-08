@@ -13,7 +13,9 @@ namespace Konnect.Service.DatabaseManager
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostComment> PostComments { get; set; }
         public DbSet<Server> Servers { get; set; }
+        public DbSet<ServerChannel> ServerChannels { get; set; }
         public DbSet<ServerJoinCode> ServerJoinCodes { get; set; }
+        public DbSet<ServerMessages> ServerMessages { get; set; }
         public DbSet<ServerUser> ServerUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

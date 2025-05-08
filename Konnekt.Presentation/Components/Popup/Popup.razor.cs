@@ -1,4 +1,5 @@
 ﻿using BlazorComponentUtilities;
+using Konnekt.Presentation.Components.Base;
 using Konnekt.Presentation.Components.Popup.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Konnekt.Presentation.Components.Popup
 {
-    public partial class Popup : PresentationComponentBase
+    public partial class Popup : PresentationBase
     {
         [Parameter]
         public PopupModel? PopupModel { get; set; }
@@ -30,14 +31,16 @@ namespace Konnekt.Presentation.Components.Popup
             if (PopupModel is null)
                 return new();
 
-            await Task.Run(() =>
+            object? model = new object();
+            CascadedEditContext = new EditContext(model);
+            _suspensionToken = new CancellationTokenSource();
+
+            await Task.Factory.StartNew(() =>
             {
                 PopupModel.IsVisible = state;
 
                 if (rf is not null && editContextType is not null)
                 {
-                    object? model = null;
-
                     if (!editContextType.Namespace?.StartsWith("System") ?? false)
                     {
                         model = Activator.CreateInstance(editContextType);
@@ -65,7 +68,7 @@ namespace Konnekt.Presentation.Components.Popup
         {
             if (PopupModel is not null)
             {
-                if (CascadedEditContext is not null)
+                if (CascadedEditContext is not null && responseState is not PopupResponseState.ClosedWithCancellation)
                 {
                     if (CascadedEditContext.Validate())
                         PopupModel.Result.Data = CascadedEditContext.Model;

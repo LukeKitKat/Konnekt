@@ -98,6 +98,37 @@ namespace Konnekt.Client.Migrations
                     b.ToTable("Servers");
                 });
 
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerChannel", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("NVARCHAR(36)");
+
+                    b.Property<string>("ChannelDescription")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<string>("ChannelName")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int>("ChannelOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ServerId")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServerId");
+
+                    b.HasIndex(new[] { "Id" }, "IX_ServerChannels_Id")
+                        .IsUnique();
+
+                    b.ToTable("ServerChannels");
+                });
+
             modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerJoinCode", b =>
                 {
                     b.Property<string>("Id")
@@ -105,7 +136,8 @@ namespace Konnekt.Client.Migrations
 
                     b.Property<string>("JoinCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("ServerId")
                         .IsRequired()
@@ -121,6 +153,29 @@ namespace Konnekt.Client.Migrations
                     b.ToTable("ServerJoinCodes");
                 });
 
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerMessages", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("NVARCHAR(36)");
+
+                    b.Property<string>("ChannelId")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR(36)");
+
+                    b.Property<string>("MessageBody")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChannelId");
+
+                    b.HasIndex(new[] { "Id" }, "IX_ServerMessages_Id")
+                        .IsUnique();
+
+                    b.ToTable("ServerMessages");
+                });
+
             modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerUser", b =>
                 {
                     b.Property<string>("Id")
@@ -129,6 +184,9 @@ namespace Konnekt.Client.Migrations
                     b.Property<string>("ServerId")
                         .IsRequired()
                         .HasColumnType("NVARCHAR(36)");
+
+                    b.Property<int>("ServerOrder")
+                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -241,14 +299,14 @@ namespace Konnekt.Client.Migrations
                         new
                         {
                             Id = "743da3b6-e3a4-40fb-ae3a-6773b103ee1a",
-                            ConcurrencyStamp = "5ff2b2af-2395-4a23-b8f2-e00bb1aa2dd2",
+                            ConcurrencyStamp = "a94197f4-2722-474e-80bd-3582254240ee",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "dc3323c1-5f95-4a9b-803f-983c5a6a537e",
-                            ConcurrencyStamp = "459db496-bf72-4630-b87e-60e24ee25dba",
+                            ConcurrencyStamp = "3792c9c2-2d51-40ca-b702-39e538769585",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -378,6 +436,17 @@ namespace Konnekt.Client.Migrations
                     b.Navigation("CommentAuthor");
                 });
 
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerChannel", b =>
+                {
+                    b.HasOne("Konnect.Service.DatabaseManager.Models.Server", "Server")
+                        .WithMany("ServerChannels")
+                        .HasForeignKey("ServerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Server");
+                });
+
             modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerJoinCode", b =>
                 {
                     b.HasOne("Konnect.Service.DatabaseManager.Models.Server", "Server")
@@ -387,6 +456,17 @@ namespace Konnekt.Client.Migrations
                         .IsRequired();
 
                     b.Navigation("Server");
+                });
+
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerMessages", b =>
+                {
+                    b.HasOne("Konnect.Service.DatabaseManager.Models.ServerChannel", "Channel")
+                        .WithMany()
+                        .HasForeignKey("ChannelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Channel");
                 });
 
             modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerUser", b =>
@@ -461,6 +541,8 @@ namespace Konnekt.Client.Migrations
 
             modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.Server", b =>
                 {
+                    b.Navigation("ServerChannels");
+
                     b.Navigation("ServerJoinCodes");
 
                     b.Navigation("ServerUsers");

@@ -1,28 +1,29 @@
-@using Konnekt.Presentation.Components.Button
-@using Konnekt.Presentation.Components.Input
+@using Konnekt.Presentation.Components.Base
+@using Konnekt.Presentation.Components.KonnektButton
+@using Konnekt.Presentation.Components.KonnektButton.Models
+@using Konnekt.Presentation.Components.KonnektInput
 @using Konnekt.Presentation.Components.Popup.Models
 @using Konnekt.Presentation.Components.ServerBar.Models
 @using Konnekt.Presentation.Components.ServerBar.ServerBarItem
-@using Konnekt.Presentation.Pages.Server.Joining
 @using Microsoft.AspNetCore.Components.Forms
 @using Microsoft.JSInterop
-@inherits PresentationComponentBase
+@inherits PresentationBase
 
-<div class="@_serverBarClasses">
+<div class="@ServerBarClasses">
 
     <div class="server-bar__controls d-flex flex-row-reverse justify-content-center">
 
-        <Button Icon="@_collapsedClasses"
+        <KonnektButton Icon="@CollapsedClasses"
                 Class="justify-content-center"
                 OnClick="() => ToggleCollapse()" />
 
     </div>
 
-    <div class="ps-2 overflow-y-auto overflow-x-hidden">
+    <div class="px-2 overflow-y-auto overflow-x-hidden">
 
         @if (Layout is not null)
         {
-            <Button Icon="fa-solid fa-square-plus"
+            <KonnektButton Icon="fa-solid fa-square-plus"
                     Class="mb-1 mt-2"
                     ButtonSize="_collapsed ? ButtonSize.Square : ButtonSize.Max"
                     Label="@(_collapsed ? string.Empty : "Add new Konnektion")"
@@ -31,7 +32,7 @@
 
         @foreach (var server in _servers)
         {
-            <ServerBarItem ServerName="@(_collapsed ? string.Empty : server)" />
+            <ServerBarItem Server="server" RenderServerName="!_collapsed" />
         }
     </div>
 

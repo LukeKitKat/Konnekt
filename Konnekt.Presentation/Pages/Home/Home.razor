@@ -1,14 +1,13 @@
-﻿@using Konnekt.Presentation.Components
+﻿@using Konnekt.Presentation.Components;
+@using Konnekt.Presentation.Components.Base
 
-@inherits PresentationPageBase
+@inherits PresentationBase
 @page "/"
 
 <div class="home">
     <div class="home-container">
 
         <h3>Home</h3>
-
-        <Microsoft.AspNetCore.Components.Forms.InputText @bind-Value="@Test" />
 
         @* <IconButton OnClick="NavigateAsync" />
 

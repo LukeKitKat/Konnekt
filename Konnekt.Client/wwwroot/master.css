@@ -10,7 +10,8 @@
 /*#endregion*/
 
 /*#region ===COMPONENTS===*/
-    @import url(Styles/3-Components/Button.css);
+    @import url(Styles/3-Components/KonnektButton.css);
+    @import url(Styles/3-Components/KonnektIcon.css);
     @import url(Styles/3-Components/ServerBar.css);
     @import url(Styles/3-Components/TopBar.css);
 /*#endregion*/

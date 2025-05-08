@@ -1,0 +1,22 @@
+﻿@using Konnect.Service.DatabaseManager.Models
+@using Microsoft.AspNetCore.Identity
+@inject NavigationManager NavigationManager
+@inject SignInManager<User> SignInManager
+
+    @page "/Account/Signout/"
+
+@code {
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
+
+    [Parameter]
+    public bool WithError { get; set; }
+    [Parameter]
+    public string? ErrorCode { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await SignInManager.SignOutAsync();
+        NavigationManager.NavigateTo("/", forceLoad: true);
+    }
+}
