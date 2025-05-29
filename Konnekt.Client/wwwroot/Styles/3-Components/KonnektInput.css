@@ -1,0 +1,11 @@
+﻿.konnekt-input {
+    width: 100%;
+}
+
+    .konnekt-input > input {
+        height: var(--control--height-standard);
+        width: inherit;
+        background-color: var(--color-pink);
+        border: 0;
+        outline: var(--border-standard);
+    }

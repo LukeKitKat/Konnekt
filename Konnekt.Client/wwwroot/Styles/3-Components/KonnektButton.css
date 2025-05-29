@@ -1,18 +1,29 @@
 ﻿.konnekt-button {
     /**/
-    height: 3rem;
+    height: var(--control--height-standard);
     width: var(--button--width);
     background-color: var(--color-pink);
+    outline: var(--border-standard);
 }
 
     .konnekt-button:hover {
         background-color: var(--color-pink-darken);
     }
 
+    .konnekt-button:focus {
+        background-color: var(--color-pink-darken);
+        outline: var(--border-standard) !important;
+    }
+
 /*#region Width Modifiers*/
 
 .konnekt-button__width_max {
     --button--width: 100%;
+}
+
+.konnekt-button__width_smallsquare {
+    --button--width: 2rem;
+    height: 2rem !important;
 }
 
 .konnekt-button__width_square {

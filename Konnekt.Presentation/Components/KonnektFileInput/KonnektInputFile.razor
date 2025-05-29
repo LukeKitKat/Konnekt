@@ -1,0 +1,19 @@
+﻿@typeparam T
+@inherits InputFile
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Components.Forms
+
+<div class="">
+
+    @{
+        base.BuildRenderTree(__builder);
+    }
+
+    <ValidationMessage For="For" />
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public Expression<Func<T>> For { get; set; } = default!;
+}
+

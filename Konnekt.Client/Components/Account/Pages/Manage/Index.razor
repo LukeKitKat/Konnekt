@@ -2,9 +2,11 @@
 
 @using System.ComponentModel.DataAnnotations
 @using Konnect.Service.DatabaseManager.Models
+@using Konnect.Service.Services.UserManagerHelperService
 @using Microsoft.AspNetCore.Identity
 
 @inject UserManager<User> UserManager
+@inject UserManagerHelper UserManagerHelper
 @inject SignInManager<User> SignInManager
 @inject IdentityUserAccessor UserAccessor
 @inject IdentityRedirectManager RedirectManager
@@ -20,9 +22,22 @@
             <DataAnnotationsValidator />
             <ValidationSummary class="text-danger" role="alert" />
             <div class="form-floating mb-3">
-                <input type="text" value="@username" class="form-control" placeholder="Please choose your username." disabled />
-                <label for="username" class="form-label">Username</label>
+                <input type="text" value="@email" class="form-control" placeholder="Please choose your email." disabled />
+                <label for="email" class="form-label">Email</label>
             </div>
+
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.Username" class="form-control" autocomplete="username" aria-required="true" placeholder="username" />
+                <label for="username">Username</label>
+                <ValidationMessage For="() => Input.Username" class="text-danger" />
+            </div>
+
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.Status" class="form-control" autocomplete="status" aria-required="true" placeholder="status" />
+                <label for="status">Status</label>
+                <ValidationMessage For="() => Input.Status" class="text-danger" />
+            </div>
+
             <div class="form-floating mb-3">
                 <InputText @bind-Value="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number." />
                 <label for="phone-number" class="form-label">Phone number</label>
@@ -31,10 +46,10 @@
             <button type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
         </EditForm>
 
-        <div class="row">
+        <div class="row mt-2">
             <div class="col">
 
-                <a href="Account/Signout">Sign out</a>
+                <a class="fs-4" href="Account/Signout">Sign out</a>
 
             </div>
         </div>
@@ -43,8 +58,10 @@
 
 @code {
     private User user = default!;
-    private string? username;
+    private string? email;
     private string? phoneNumber;
+    private string? username;
+    private string? status;
 
     [CascadingParameter]
     private HttpContext HttpContext { get; set; } = default!;
@@ -55,14 +72,31 @@
     protected override async Task OnInitializedAsync()
     {
         user = await UserAccessor.GetRequiredUserAsync(HttpContext);
-        username = await UserManager.GetUserNameAsync(user);
+        email = await UserManager.GetUserNameAsync(user);
         phoneNumber = await UserManager.GetPhoneNumberAsync(user);
+        username = user.DisplayName;
+        status = user.ProfileStatus;
 
+        Input.Username ??= username;
+        Input.Status ??= status;
         Input.PhoneNumber ??= phoneNumber;
     }
 
     private async Task OnValidSubmitAsync()
     {
+        if (Input.Username != username)
+        {
+            var resp = await UserManagerHelper.UpdateDisplayName(user, Input.Username!);
+            if (!resp.Success)
+                return;
+        }
+
+        if (Input.Status != status)
+        {
+            user.ProfileStatus = Input.Status;
+            await UserManager.UpdateAsync(user);
+        }
+
         if (Input.PhoneNumber != phoneNumber)
         {
             var setPhoneResult = await UserManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
@@ -81,5 +115,14 @@
         [Phone]
         [Display(Name = "Phone number")]
         public string? PhoneNumber { get; set; }
+
+        [Required]
+        [MaxLength(64)]
+        [Display(Name = "Username")]
+        public string? Username { get; set; }
+
+        [MaxLength(128)]
+        [Display(Name = "Status")]
+        public string? Status { get; set; }
     }
 }

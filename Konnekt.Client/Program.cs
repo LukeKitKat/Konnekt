@@ -1,7 +1,8 @@
-using Konnect.Service.ActivityObserver;
 using Konnect.Service.DatabaseManager;
 using Konnect.Service.DatabaseManager.Models;
-using Konnect.Service.ServerNavigator;
+using Konnect.Service.Services.ActivityObserverService;
+using Konnect.Service.Services.ServerManagerService;
+using Konnect.Service.Services.UserManagerHelperService;
 using Konnekt.Client;
 using Konnekt.Client.Components;
 using Konnekt.Client.Components.Account;
@@ -47,6 +48,7 @@ builder.Services.AddIdentityCore<User>(options => options.SignIn.RequireConfirme
 builder.Services.AddSingleton<IEmailSender<User>, IdentityNoOpEmailSender>();
 builder.Services.AddScoped<ServerManager, ServerManager>();
 builder.Services.AddSingleton<ActivityObserver, ActivityObserver>();
+builder.Services.AddScoped<UserManagerHelper, UserManagerHelper>();
 
 var app = builder.Build();
 

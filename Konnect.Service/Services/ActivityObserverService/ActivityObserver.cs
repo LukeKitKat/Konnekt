@@ -1,7 +1,6 @@
 ﻿using Konnect.Service.DatabaseManager;
 using Konnect.Service.DatabaseManager.Models;
 using Konnect.Service.Models;
-using Konnect.Service.ServerNavigator;
 using Konnect.Service.Services;
 using Microsoft.Data.SqlClient.DataClassification;
 using Microsoft.Extensions.Logging;
@@ -15,18 +14,18 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace Konnect.Service.ActivityObserver
+namespace Konnect.Service.Services.ActivityObserverService
 {
     public class ActivityObserver()
     {
-        private protected ConcurrentDictionary<string, (User User, DateTime Expiry)> ActiveUsers { get; set; } = new(new Dictionary<string, (User User, DateTime Expiry)>());
-        public Action SystemActivityFuncs { get; set; } = default!;
+        private protected ConcurrentDictionary<string, (User User, DateTime Expiry)> ActiveUsers { get; set; } = [];
+        public Func<Task> SystemActivityFuncs { get; set; } = default!;
 
-        public async Task<bool> TryAddOrRemoveUserActivity(bool registering, User? user)
+        public async Task<(bool Exception, bool Success)> TryAddOrRemoveUserActivity(bool registering, User? user)
         {
             bool success;
             if (user is null)
-                return false;
+                return (true, false);
 
             if (registering)
             {
@@ -34,23 +33,24 @@ namespace Konnect.Service.ActivityObserver
                 success = true;
             }
             else
-            { 
+            {
                 success = ActiveUsers.Remove(user.Id, out _);
             }
 
-            await NotifySystemActivity();
-            return success;
+            await NotifySystemActivityAsync();
+            return (false, success);
         }
 
         public int CountActiveUsers()
             => ActiveUsers.Count;
 
-        public async Task NotifySystemActivity()
+        public bool IsActiveUser(string userId)
+            => ActiveUsers.ContainsKey(userId);
+
+        public async Task NotifySystemActivityAsync()
         {
             if (SystemActivityFuncs is not null)
-                SystemActivityFuncs.Invoke();
-
-            await Task.Delay(1);
+                await SystemActivityFuncs.Invoke();
         }
     }
 }

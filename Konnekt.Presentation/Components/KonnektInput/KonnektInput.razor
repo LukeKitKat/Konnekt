@@ -3,13 +3,18 @@
 @using System.Linq.Expressions
 @inherits InputText
 
-@{
-    <label class="pe-2 align-self-center">@Label</label>
-    base.BuildRenderTree(__builder);
+<div class="konnekt-input d-flex align-items-center">
+    @if (!string.IsNullOrEmpty(Label))
+    {
+        <label class="pe-2 align-self-center">@Label</label>
+    }
+    @{
+        base.BuildRenderTree(__builder);
+    }
     <ValidationMessage For="For" />
-}
+</div>
 
-@code{
+@code {
     [Parameter, EditorRequired]
     public Expression<Func<string>> For { get; set; } = default!;
 

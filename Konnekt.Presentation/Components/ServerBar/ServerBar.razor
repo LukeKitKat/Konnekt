@@ -11,13 +11,14 @@
 
 <div class="@ServerBarClasses">
 
-    <div class="server-bar__controls d-flex flex-row-reverse justify-content-center">
+    @* <div class="server-bar__controls d-flex flex-row-reverse justify-content-center">
 
         <KonnektButton Icon="@CollapsedClasses"
                 Class="justify-content-center"
-                OnClick="() => ToggleCollapse()" />
+                OnClick="() => ToggleCollapse()"
+                ButtonSize="@(_collapsed ? ButtonSize.Square : ButtonSize.Max)"/>
 
-    </div>
+    </div> *@
 
     <div class="px-2 overflow-y-auto overflow-x-hidden">
 
@@ -26,7 +27,7 @@
             <KonnektButton Icon="fa-solid fa-square-plus"
                     Class="mb-1 mt-2"
                     ButtonSize="_collapsed ? ButtonSize.Square : ButtonSize.Max"
-                    Label="@(_collapsed ? string.Empty : "Add new Konnektion")"
+                    Label="@(_collapsed ? string.Empty : "Add Konnektion")"
                     OnClick="() => AddNewKonnektionClickedAsync()" />
         }
 

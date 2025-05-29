@@ -35,12 +35,20 @@ namespace Konnekt.Presentation.Components.KonnektIcon
         {
             switch (IconSize)
             {
+                case IconSize.ExtraSmall:
+                    _classIconSize = "konnekt-icon__width_extrasmall";
+                    break;
+
                 case IconSize.Small:
                     _classIconSize = "konnekt-icon__width_small";
                     break;
 
                 case IconSize.Medium:
                     _classIconSize = "konnekt-icon__width_medium";
+                    break;
+
+                case IconSize.Large:
+                    _classIconSize = "konnekt-icon__width_large";
                     break;
 
             }

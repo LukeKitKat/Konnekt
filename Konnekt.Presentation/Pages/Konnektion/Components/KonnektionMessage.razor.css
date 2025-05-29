@@ -1,0 +1,22 @@
+.konnektion-message__container {
+}
+
+    .konnektion-message__container:hover > .konnektion-message__context-container {
+        display: flex !important;
+        left: 80%;
+        position: absolute;
+    }
+
+.konnektion-message__text-header {
+    margin: 0;
+}
+
+.konnektion-message__text-body {
+    min-height: 2rem;
+    margin: 0;
+    overflow-wrap: break-word;
+}
+
+.konnektion-message__context-container {
+    display: none;
+}

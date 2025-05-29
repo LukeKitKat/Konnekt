@@ -5,4 +5,6 @@
     /**/
     --border-standard--width: 0.2rem;
     --border-standard: var(--border-standard--width) solid var(--color-secondary);
+    /**/
+    --control--height-standard: 3rem;
 }

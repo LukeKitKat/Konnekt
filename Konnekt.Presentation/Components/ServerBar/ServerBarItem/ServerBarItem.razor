@@ -6,8 +6,8 @@
 <div class="py-2 d-flex flex-row justify-content-center">
 
     <KonnektButton Icon="fa-solid fa-earth-americas"
-            OnClick="OnServerClicked"
-            Label="@(RenderServerName ? Server.ServerName : string.Empty)"
-            ButtonSize="string.IsNullOrEmpty(Server.ServerName) ? ButtonSize.Square : ButtonSize.Max" />
+                   OnClick="OnServerClicked"
+                   Label="@(RenderServerName ? Server.ServerName : string.Empty)"
+                   ButtonSize="RenderServerName ? ButtonSize.Max : ButtonSize.Square" />
 
 </div>

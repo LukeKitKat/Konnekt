@@ -1,21 +1,32 @@
-﻿using Konnect.Service.DatabaseManager;
+﻿using Konnect.Service.Constants;
+using Konnect.Service.DatabaseManager;
 using Konnect.Service.DatabaseManager.Models;
 using Konnect.Service.Models;
 using Konnect.Service.Services;
+using Konnect.Service.Services._Internal;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Client;
 
-namespace Konnect.Service.ServerNavigator
+namespace Konnect.Service.Services.ServerManagerService
 {
-    public class ServerManager(IDbContextFactory<KonnektContext> dbContextFactory, ILogger<ServerManager> logger) : ServiceBase<ServerManager>(dbContextFactory, logger)
+    public class ServerManager(IDbContextFactory<KonnektContext> dbContextFactory, ILogger<ServerManager> logger)
+        : ServiceBase<ServerManager>(dbContextFactory, logger)
     {
+        internal CommonFileHandler FileHandler { get; set; } = new();
+
         public async Task<ServiceResponse<Server?>> GetServerByIdAsync(string serverId)
         {
             return await ExecAsync<Server?>(async (db, resp) =>
             {
                 return await db.Servers.AsNoTracking()
+                                       .AsSplitQuery()
                                        .Include(x => x.ServerChannels)
+                                       .Include(x => x.ServerUsers)
+                                            .ThenInclude(x => x.User)
                                        .FirstOrDefaultAsync(x => x.Id == serverId);
             });
         }
@@ -41,13 +52,16 @@ namespace Konnect.Service.ServerNavigator
             });
         }
 
-        public async Task<ServiceResponse<List<ServerChannel>>> GetServerChannelsAsync(Server server)
+        public async Task<ServiceResponse<ServerChannel>> GetChannelContentAsync(string channelId)
         {
-            return await ExecAsync<List<ServerChannel>>(async (db, resp) =>
+            return await ExecAsync<ServerChannel>(async (db, resp) =>
             {
                 return await db.ServerChannels.AsNoTracking()
-                                              .Where(x => x.ServerId == server.Id)
-                                              .ToListAsync();
+                                              .Include(x => x.ServerMessages)
+                                                .ThenInclude(x => x.Sender)
+                                              .Include(x => x.ServerMessages)
+                                                .ThenInclude(x => x.ServerMessageFiles)
+                                              .FirstOrDefaultAsync(x => x.Id == channelId);
             });
         }
 
@@ -130,6 +144,67 @@ namespace Konnect.Service.ServerNavigator
                 {
                     return null;
                 }
+            });
+        }
+
+        public async Task<ServiceResponse> AddMessageToChannelAsync(string channelId, string senderId, string messageBody, IReadOnlyList<IBrowserFile> messageFiles)
+        {
+            return await ExecAsync(async (db, resp) =>
+            {
+                ServerMessage message = new()
+                {
+                    SenderId = senderId,
+                    ChannelId = channelId,
+                    MessageBody = messageBody,
+                    TimeSent = DateTime.UtcNow,
+                };
+
+                await db.ServerMessages.AddAsync(message);
+
+                foreach (var browserFile in messageFiles)
+                {
+                    if (MimeTypes.CombinedImageMimes.All(x => x.Value != browserFile.ContentType))
+                        throw new Exception("Mime type of the given file is not allowed.");
+
+                    byte[] bytes = await FileHandler.GetFileBytesAsync(browserFile);
+
+                    await db.ServerMessagesFiles.AddAsync(new()
+                    {
+                        FileContent = bytes,
+                        FileName = browserFile.Name,
+                        FileType = browserFile.ContentType,
+                        ServerMessageId = message.Id,
+                        ServerMessage = message,
+                    });
+                }
+
+                await db.SaveChangesAsync();
+            });
+        }
+
+        public async Task<ServiceResponse> DeleteMessageFromChannelAsync(string messageId)
+        {
+            return await ExecAsync(async (db, resp) =>
+            {
+                var msg = await db.ServerMessages.AsNoTracking()
+                                           .FirstOrDefaultAsync(x => x.Id == messageId);
+
+                if (msg == null)
+                    throw new Exception($"Could not find a message with the Id: {messageId}");
+
+                db.Remove(msg);
+                await db.SaveChangesAsync();
+            });
+        }
+
+        public async Task<ServiceResponse> EditMessageInChannelAsync(ServerMessage messageModel)
+        {
+            return await ExecAsync(async (db, resp) =>
+            {
+                messageModel.TimeEdited = DateTime.UtcNow;
+
+                db.Update(messageModel);
+                await db.SaveChangesAsync();
             });
         }
 

@@ -1,10 +1,12 @@
 .konnektion {
     background-color: var(--color-tertiary);
     max-width: unset;
+    height: inherit;
 }
 
 .konnektion__aside-left {
     border-right: var(--border-standard);
+    height: inherit;
 }
 
 .konnektion__server-details {
@@ -14,20 +16,3 @@
         width: inherit;
         line-height: revert;
     }
-
-.konnektion__chat-container {
-}
-
-.konnektion__chat {
-    border-top: var(--border-standard);
-    height: 10%;
-}
-
-.konnektion__chat-messages {
-    background-color: var(--color-primary);
-    height: 90%;
-}
-
-.konnektion__members-container {
-    border-left: var(--border-standard);
-}

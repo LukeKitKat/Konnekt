@@ -33,7 +33,7 @@ namespace Konnekt.Presentation.Components.TopBar
                 if (!authorized)
                     currentUserString = "Not signed in";
                 else
-                    currentUserString = $"Signed in as: {user?.UserName}";
+                    currentUserString = $"Signed in as: {user?.DisplayName}";
 
                 StateHasChanged();
             }

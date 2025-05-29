@@ -1,5 +1,112 @@
-﻿@using Konnekt.Presentation.Components;
+﻿@using Konnect.Service.Attributes
+@using Konnekt.Presentation.Components;
 @using Konnekt.Presentation.Components.Base
+@using Konnekt.Presentation.Components.KonnektButton
+@using Konnekt.Presentation.Components.KonnektButton.Models
+@using Konnekt.Presentation.Components.KonnektFileInput
+@using Konnekt.Presentation.Components.KonnektIcon
+@using Konnekt.Presentation.Components.KonnektImageRenderer
+@using Konnekt.Presentation.Components.KonnektInput
+@using Konnekt.Presentation.Pages.Konnektion.Components
+@using Microsoft.AspNetCore.Components.Forms
+@using System.ComponentModel.DataAnnotations
 @inherits PresentationBase
 
-<h3 class="py-2 m-0">@($"{ChannelModel?.ChannelName} - Order : {ChannelModel?.ChannelOrder}")</h3>
+@if (ChannelModel is not null)
+{
+    <div class="konnektion__chat-container col-8">
+        <div id="jsMessageBox" class="konnektion__chat-messages row">
+            <div class="h-100">
+                <h1 class="mt-4 d-flex justify-content-center">@($"Beginning of {ChannelModel.ChannelName}'s message history.")</h1>
+                <hr class="my-5" />
+
+                @foreach (var message in ChannelModel.ServerMessages.OrderBy(x => x.TimeSent))
+                {
+                    <KonnektionMessage MessageModel="@message" />
+                }
+            </div>
+        </div>
+        <div class="konnektion__chat row">
+            <EditForm class="d-flex align-items-center"
+                      EditContext="MessageContext"
+                      OnValidSubmit="SendMessageAsync">
+
+                <ValidationSummary />
+                <DataAnnotationsValidator />
+
+                <KonnektInputFile T="IReadOnlyList<IBrowserFile>" OnChange="HandleMessageFile"
+                                  For="() => MessageInput.Files"
+                                  multiple />
+
+
+                <KonnektInput @bind-Value="MessageInput.MessageBody"
+                              For="() => MessageInput.MessageBody" />
+
+                <KonnektButton ButtonType="ButtonType.Submit"
+                               ButtonSize="ButtonSize.Small"
+                               Label="Send" />
+
+            </EditForm>
+        </div>
+    </div>
+
+    <div class="konnektion__members-container col-2">
+        <h3 class="mt-3">@($"Online ({OnlineUsers.Count})")</h3>
+        <hr />
+        @foreach (var onlineUsers in OnlineUsers)
+        {
+            <div class="konnektion-message__container w-100 d-flex mb-3">
+
+                <KonnektImageRenderer Class="me-2"
+                                      ImageSource="@onlineUsers.ProfilePicture"
+                                      ImageAltText="@($"{onlineUsers.DisplayName}s Profile Picture")" />
+
+                <div class="d-flex flex-column justify-content-evenly">
+                    <h5 class="konnektion-message__text-header">@onlineUsers.DisplayName</h5>
+
+                    @if (!string.IsNullOrEmpty(onlineUsers.ProfileStatus))
+                    {
+                        <p class="konnektion-message__text-body">@onlineUsers.ProfileStatus</p>
+                    }
+                </div>
+            </div>
+        }
+
+        <h3>@($"Offline ({OfflineUsers.Count})")</h3>
+        <hr />
+        @foreach (var offlineUsers in OfflineUsers)
+        {
+            <div class="konnektion-message__container w-100 d-flex mb-3">
+
+                <KonnektImageRenderer Class="me-2"
+                                      ImageSource="@offlineUsers.ProfilePicture"
+                                      ImageAltText="@($"{offlineUsers.DisplayName}s Profile Picture")" />
+
+                <div class="d-flex flex-column justify-content-evenly">
+                    <h5 class="konnektion-message__text-header">@offlineUsers.DisplayName</h5>
+
+                    @if (!string.IsNullOrEmpty(offlineUsers.ProfileStatus))
+                    {
+                        <p class="konnektion-message__text-body">@offlineUsers.ProfileStatus</p>
+                    }
+                </div>
+            </div>
+        }
+
+    </div>
+}
+
+@code {
+    private MessageInputModel MessageInput { get; set; } = new();
+
+    private class MessageInputModel
+    {
+        [RequiredIf(otherProperty: nameof(Files), otherPropertyValue: null, IsInverted = false)]
+        [Display(Name = "Message content")]
+        public string? MessageBody { get; set; }
+
+        [Display(Name = "Message file content")]
+        [ListMaxCount<IBrowserFile>(9, "Message file content", ErrorMessage = "Selected files exceed the upload limit")]
+        public IReadOnlyList<IBrowserFile>? Files { get; set; } = null;
+    }
+}

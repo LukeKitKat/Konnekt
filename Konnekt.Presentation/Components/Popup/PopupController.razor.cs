@@ -75,6 +75,17 @@ namespace Konnekt.Presentation.Components.Popup
                     TitleText = "Creating new Channel",
                     BodyText = "Please enter a name for the Channel.",
                 }
+            },
+            new ()
+            {
+                PopupType = PopupType.DeleteMessage,
+                PopupModel = new PopupModel()
+                {
+                    TitleText = "Delete message?",
+                    BodyText = "Are you sure you wish to delete the following message?",
+                    Option1Text = "Delete",
+                    CancelButtonText = "Cancel"
+                }
             }
         };
     }

@@ -1,10 +1,6 @@
 .server-bar {
-    width: var(--server-bar--width);
+    height: inherit;
     border-right: var(--border-standard);
-}
-
-.server-bar--collapsed {
-    --server-bar--width: auto;
 }
 
 .server-bar__controls {

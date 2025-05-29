@@ -17,7 +17,7 @@ namespace Konnekt.Client.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "8.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -153,7 +153,7 @@ namespace Konnekt.Client.Migrations
                     b.ToTable("ServerJoinCodes");
                 });
 
-            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerMessages", b =>
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerMessage", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("NVARCHAR(36)");
@@ -163,17 +163,59 @@ namespace Konnekt.Client.Migrations
                         .HasColumnType("NVARCHAR(36)");
 
                     b.Property<string>("MessageBody")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("TimeEdited")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("TimeSent")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ChannelId");
 
-                    b.HasIndex(new[] { "Id" }, "IX_ServerMessages_Id")
+                    b.HasIndex("SenderId");
+
+                    b.HasIndex(new[] { "Id" }, "IX_ServerMessage_Id")
                         .IsUnique();
 
-                    b.ToTable("ServerMessages");
+                    b.ToTable("ServerMessage");
+                });
+
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerMessageFile", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("NVARCHAR(36)");
+
+                    b.Property<byte[]>("FileContent")
+                        .IsRequired()
+                        .HasColumnType("varbinary(MAX)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(MAX)");
+
+                    b.Property<string>("FileType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(MAX)");
+
+                    b.Property<string>("ServerMessageId")
+                        .IsRequired()
+                        .HasColumnType("NVARCHAR(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServerMessageId");
+
+                    b.HasIndex(new[] { "Id" }, "IX_ServerMessageFile_Id")
+                        .IsUnique();
+
+                    b.ToTable("ServerMessageFile");
                 });
 
             modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerUser", b =>
@@ -216,6 +258,10 @@ namespace Konnekt.Client.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(64)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -245,6 +291,12 @@ namespace Konnekt.Client.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<byte[]>("ProfilePicture")
+                        .HasColumnType("varbinary(MAX)");
+
+                    b.Property<string>("ProfileStatus")
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -299,14 +351,14 @@ namespace Konnekt.Client.Migrations
                         new
                         {
                             Id = "743da3b6-e3a4-40fb-ae3a-6773b103ee1a",
-                            ConcurrencyStamp = "a94197f4-2722-474e-80bd-3582254240ee",
+                            ConcurrencyStamp = "53906a61-0a56-45ce-89bd-da5e51a2e550",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "dc3323c1-5f95-4a9b-803f-983c5a6a537e",
-                            ConcurrencyStamp = "3792c9c2-2d51-40ca-b702-39e538769585",
+                            ConcurrencyStamp = "8ef2a95d-842c-40f4-86e0-8924c49a132a",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -458,15 +510,34 @@ namespace Konnekt.Client.Migrations
                     b.Navigation("Server");
                 });
 
-            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerMessages", b =>
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerMessage", b =>
                 {
                     b.HasOne("Konnect.Service.DatabaseManager.Models.ServerChannel", "Channel")
-                        .WithMany()
+                        .WithMany("ServerMessages")
                         .HasForeignKey("ChannelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Konnect.Service.DatabaseManager.Models.User", "Sender")
+                        .WithMany("ServerMessages")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Channel");
+
+                    b.Navigation("Sender");
+                });
+
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerMessageFile", b =>
+                {
+                    b.HasOne("Konnect.Service.DatabaseManager.Models.ServerMessage", "ServerMessage")
+                        .WithMany("ServerMessageFiles")
+                        .HasForeignKey("ServerMessageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ServerMessage");
                 });
 
             modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerUser", b =>
@@ -548,8 +619,20 @@ namespace Konnekt.Client.Migrations
                     b.Navigation("ServerUsers");
                 });
 
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerChannel", b =>
+                {
+                    b.Navigation("ServerMessages");
+                });
+
+            modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.ServerMessage", b =>
+                {
+                    b.Navigation("ServerMessageFiles");
+                });
+
             modelBuilder.Entity("Konnect.Service.DatabaseManager.Models.User", b =>
                 {
+                    b.Navigation("ServerMessages");
+
                     b.Navigation("ServerUsers");
                 });
 #pragma warning restore 612, 618

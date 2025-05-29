@@ -4,10 +4,18 @@
     padding: 0;
 }
 
+.konnekt-icon__width_extrasmall {
+    --konnekt-icon--width: 1rem;
+}
+
 .konnekt-icon__width_small {
     --konnekt-icon--width: 2rem;
 }
 
 .konnekt-icon__width_medium {
+    --konnekt-icon--width: 3rem;
+}
+
+.konnekt-icon__width_large {
     --konnekt-icon--width: 4rem;
 }

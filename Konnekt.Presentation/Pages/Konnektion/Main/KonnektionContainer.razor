@@ -4,6 +4,7 @@
 @using Konnekt.Presentation.Components.KonnektButton
 @using Konnekt.Presentation.Components.KonnektButton.Models
 @using Konnekt.Presentation.Components.KonnektIcon
+@using Konnekt.Presentation.Components.KonnektIcon.Models
 @using Konnekt.Presentation.Components.KonnektInput
 @using Konnekt.Presentation.Pages.Konnektion.Main
 @using Microsoft.AspNetCore.Components.Forms
@@ -13,14 +14,14 @@
 
 @if (ServerModel is not null)
 {
-    <div class="konnektion w-100 container">
+    <div class="konnektion col-11">
         <div class="h-100 row">
             <div class="konnektion__aside-left col-2">
                 <div class="konnektion__server-details row justify-content-between align-items-center flex-nowrap">
 
                     <KonnektIcon Icon="fa-solid fa-earth-americas"
                                  IconClass="p-2"
-                                 IconSize="Components.KonnektIcon.Models.IconSize.Medium" />
+                                 IconSize="IconSize.Medium" />
 
                     <h3 class="m-0">@ServerModel.ServerName</h3>
 
@@ -37,22 +38,15 @@
 
                     @foreach (var channel in ServerModel.ServerChannels.OrderBy(x => x.ChannelOrder).ToList())
                     {
-                        <KonnektionChannel ChannelModel="channel" />
+                        <KonnektButton Label="@channel.ChannelName" OnClick="() => OnChannelClicked(channel.Id)" />
                     }
                 </div>
             </div>
 
-            <div class="konnektion__chat-container col-8">
-                <div class="konnektion__chat-messages row ">
-                </div>
-                <div class="konnektion__chat row">
-                </div>
-            </div>
-
-            <div class="konnektion__members-container col-2">
-
-                
-            </div>
+            @if (!string.IsNullOrEmpty(ActiveChannelId))
+            {
+                <KonnektionChannel ChannelId="@ActiveChannelId" ServerModel="ServerModel" />
+            }
         </div>
     </div>
 }

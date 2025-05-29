@@ -1,6 +1,7 @@
 ﻿using BlazorComponentUtilities;
 using Konnekt.Presentation.Components.Base;
 using Konnekt.Presentation.Components.KonnektButton.Models;
+using Konnekt.Presentation.Components.KonnektIcon.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -16,6 +17,8 @@ namespace Konnekt.Presentation.Components.KonnektButton
         [Parameter]
         public EventCallback OnClick { get; set; }
         [Parameter]
+        public string Style { get; set; } = string.Empty;
+        [Parameter]
         public string Class { get; set; } = string.Empty;
         [Parameter]
         public string Label { get; set; } = string.Empty;
@@ -29,6 +32,8 @@ namespace Konnekt.Presentation.Components.KonnektButton
         public ButtonType ButtonType { get; set; } = ButtonType.OnClick;
         [Parameter]
         public ButtonSize ButtonSize { get; set; } = ButtonSize.Max;
+        [Parameter]
+        public IconSize IconSize { get; set; } = IconSize.Small;
         [Parameter]
         public bool Disabled { get; set; }
 
@@ -74,6 +79,10 @@ namespace Konnekt.Presentation.Components.KonnektButton
 
                 case ButtonSize.Square:
                     _classButtonSize = "konnekt-button__width_square";
+                    break;
+
+                case ButtonSize.SmallSquare:
+                    _classButtonSize = "konnekt-button__width_smallsquare";
                     break;
 
                 case ButtonSize.Small:

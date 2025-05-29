@@ -1,17 +1,31 @@
-﻿@inherits LayoutComponentBase
+﻿@using Konnekt.Presentation.Components.KonnektButton
+@using Konnekt.Presentation.Components.KonnektButton.Models
+@using Konnekt.Presentation.Components.KonnektIcon
+@inherits LayoutComponentBase
 @layout AccountLayout
+@inject NavigationManager NavigationManager
 
-<h1>Manage your account</h1>
+<div class="w-100 d-flex flex-column">
+    <div class="w-100 ms-4 mt-4 d-flex flex-row">
 
-<div>
-    <h2>Change your account settings</h2>
-    <hr />
-    <div class="row">
-        <div class="col-md-3">
-            <ManageNavMenu />
-        </div>
-        <div class="col-md-9">
-            @Body
+        <NavLink class="nav-link me-4 align-self-center" href="/">
+            <KonnektIcon Icon="fa-solid fa-house"
+                         IconClass="me-2" />
+            <p>Back</p>
+        </NavLink>
+
+        <h1>Account Settings</h1>
+    </div>
+
+    <div class="w-100 justify-content-center">
+        <hr />
+        <div class="row">
+            <div class="col-md-3">
+                <ManageNavMenu />
+            </div>
+            <div class="col-md-9">
+                @Body
+            </div>
         </div>
     </div>
 </div>

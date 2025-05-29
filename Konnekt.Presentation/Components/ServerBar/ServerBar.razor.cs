@@ -1,6 +1,6 @@
 ﻿using BlazorComponentUtilities;
 using Konnect.Service.DatabaseManager.Models;
-using Konnect.Service.ServerNavigator;
+using Konnect.Service.Services.ServerManagerService;
 using Konnekt.Presentation.Components.Base;
 using Konnekt.Presentation.Components.Popup.Models;
 using Konnekt.Presentation.Components.ServerBar.Models;
@@ -20,9 +20,8 @@ namespace Konnekt.Presentation.Components.ServerBar
             .AddClass("fa-square-caret-right", _collapsed == true)
             .Build();
 
-        private string ServerBarClasses => new CssBuilder("server-bar")
+        private string ServerBarClasses => new CssBuilder("server-bar col-1")
             .AddClass("server-bar--collapsed", _collapsed == true)
-            .AddClass("d-flex flex-column")
             .Build();
 
         private List<Server> _servers = [];

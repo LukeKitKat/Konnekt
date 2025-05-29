@@ -1,0 +1,75 @@
+﻿@using Konnekt.Presentation.Components.Base
+@using Konnekt.Presentation.Components.KonnektButton
+@using Konnekt.Presentation.Components.KonnektButton.Models
+@using Konnekt.Presentation.Components.KonnektIcon
+@using Konnekt.Presentation.Components.KonnektIcon.Models
+@using Konnekt.Presentation.Components.KonnektImageRenderer
+@using Konnekt.Presentation.Components.KonnektImageRenderer.Enums
+@using Konnekt.Presentation.Components.KonnektInput
+@using Microsoft.AspNetCore.Components.Forms
+@inherits PresentationBase
+
+@if (MessageModel is not null)
+{
+    <div class="konnektion-message__container col-12">
+        <div class="row">
+            <KonnektImageRenderer Class="me-2 ms-3 p-0"
+                                  ImageSource="@MessageModel.Sender?.ProfilePicture"
+                                  ImageAltText="@($"{MessageModel.Sender?.DisplayName}s Profile Picture")" />
+
+            <div class="col-11 justify-content-evenly pb-5">
+                <h6 class="konnektion-message__text-header">@(_messageHeader)</h6>
+
+                @if (editingState)
+                {
+                    <EditForm class="d-flex flex-row"
+                              EditContext="MessageEditContext"
+                              OnValidSubmit="OnEditValidSubmitAsync">
+
+                        <KonnektInput @bind-Value="@MessageModel.MessageBody"
+                                      For="() => MessageModel.MessageBody"
+                                      style="height:2rem !important;" />
+
+                        <KonnektButton ButtonType="ButtonType.Submit"
+                                       ButtonSize="ButtonSize.SmallSquare"
+                                       IconSize="IconSize.ExtraSmall"
+                                       Icon="fa-solid fa-check"
+                                       Style="margin-right: 0.2rem !important;" />
+
+                        <KonnektButton OnClick="ToggleEditState"
+                                       ButtonSize="ButtonSize.SmallSquare"
+                                       IconSize="IconSize.ExtraSmall"
+                                       Icon="fa-solid fa-xmark" />
+                    </EditForm>
+                }
+                else
+                {
+                    @if (!string.IsNullOrEmpty(MessageModel.MessageBody))
+                    {
+                        <p class="konnektion-message__text-body">@MessageModel.MessageBody</p>
+                    }
+
+                    <div class="w-75 d-flex flex-wrap">
+                        @foreach (var file in MessageModel.ServerMessageFiles)
+                        {
+                            <KonnektImageRenderer Class="konnektion-message__image me-2 mb-2"
+                                                  ImageSource="@file.FileContent"
+                                                  ImageAltText="@($"{file.FileName}")"
+                                                  ImageType="ImageType.Message" />
+                        }
+                    </div>
+                }
+            </div>
+
+            <div class="konnektion-message__context-container justify-content-center">
+                <KonnektButton OnClick="@ToggleEditState"
+                               Icon="fa-solid fa-pen-to-square"
+                               ButtonSize="ButtonSize.Square" />
+
+                <KonnektButton OnClick="@OnDeleteClickedAsync"
+                               Icon="fa-solid fa-trash-can"
+                               ButtonSize="ButtonSize.Square" />
+            </div>
+        </div>
+    </div>
+}

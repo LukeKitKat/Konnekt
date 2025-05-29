@@ -1,7 +1,6 @@
-﻿using Konnect.Service.ActivityObserver;
-using Konnect.Service.DatabaseManager.Models;
+﻿using Konnect.Service.DatabaseManager.Models;
 using Konnect.Service.Models;
-using Konnect.Service.ServerNavigator;
+using Konnect.Service.Services.ActivityObserverService;
 using Konnekt.Presentation.Components.Layout;
 using Konnekt.Presentation.Components.Layout.Enums;
 using Microsoft.AspNetCore.Authorization;
@@ -27,28 +26,19 @@ namespace Konnekt.Presentation.Components.Base
         public NavigationManager NavigationManager { get; set; } = default!;
 
         [Inject]
-        private UserManager<User> UserManager { get; set; } = default!;
+        internal UserManager<User> UserManager { get; set; } = default!;
         [Inject]
         private AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
 
         [CascadingParameter]
         public MainLayout? Layout { get; set; }
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            await JSRuntime.InvokeVoidAsync("SessionHelpers.setDotNetHelper", DotNetObjectReference.Create(this));
-
-            User? currentUser = await GetCurrentUserAsync();
-            var success = await ActivityObserver.TryAddOrRemoveUserActivity(true, currentUser);
-            if (!success)
-                NavigationManager.NavigateTo("/Account/Signout/", false, true);
-
-            await base.OnAfterRenderAsync(firstRender);
-        }
-
         [JSInvokable("EndSession")]
-        public async Task CallSessionEndAsync()
+        public async Task CallSessionEndAsync(int navigationType)
         {
+            if (navigationType == 0)
+                return; 
+
             User? currentUser = await GetCurrentUserAsync();
             await ActivityObserver.TryAddOrRemoveUserActivity(false, currentUser);
         }

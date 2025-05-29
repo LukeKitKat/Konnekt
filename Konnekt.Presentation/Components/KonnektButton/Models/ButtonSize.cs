@@ -9,9 +9,10 @@ namespace Konnekt.Presentation.Components.KonnektButton.Models
     public enum ButtonSize
     {
         Max = 0,
-        Square = 1,
-        Small = 2,
-        Medium = 3,
-        Large = 4,
+        SmallSquare = 1,
+        Square = 2,
+        Small = 3,
+        Medium = 4,
+        Large = 5,
     }
 }

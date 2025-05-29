@@ -1,0 +1,19 @@
+.konnektion__chat {
+    border-top: var(--border-standard);
+    height: 10%;
+}
+
+.konnektion__chat-container {
+    height: inherit;
+}
+
+.konnektion__chat-messages {
+    background-color: var(--color-primary);
+    height: 90%;
+    align-content: flex-end;
+    overflow-y: scroll;
+}
+
+.konnektion__members-container {
+    border-left: var(--border-standard);
+}

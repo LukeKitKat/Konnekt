@@ -1,6 +1,5 @@
-﻿using Konnect.Service.ActivityObserver;
-using Konnect.Service.DatabaseManager.Models;
-using Konnect.Service.ServerNavigator;
+﻿using Konnect.Service.DatabaseManager.Models;
+using Konnect.Service.Services.ServerManagerService;
 using Konnekt.Presentation.Components.Base;
 using Konnekt.Presentation.Components.Popup.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -12,10 +11,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Channels;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 
 namespace Konnekt.Presentation.Pages.Konnektion.Main
 {
-    public partial class KonnektionContainer() : PresentationBase, IDisposable
+    public partial class KonnektionContainer() : PresentationBase
     {
         [Parameter]
         public string? ServerId { get; set; }
@@ -24,21 +24,12 @@ namespace Konnekt.Presentation.Pages.Konnektion.Main
         private ServerManager ServerManager { get; set; } = default!;
 
         private Server? ServerModel { get; set; }
-        private List<User> OnlineUsers { get; set; }
-        private List<User> OfflineUsers { get; set; }
-
-        private bool disposed = false;
+        public string? ActiveChannelId { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            ActivityObserver.SystemActivityFuncs += InternalRefresh;
+            ActivityObserver.SystemActivityFuncs += InternalRefreshAsync;
             await base.OnInitializedAsync();
-        }
-
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            await CheckForServerChangesAsync();
-            await base.OnAfterRenderAsync(firstRender);
         }
 
         protected override async Task OnParametersSetAsync()
@@ -61,13 +52,15 @@ namespace Konnekt.Presentation.Pages.Konnektion.Main
                     if (!resp.Success)
                         return;
 
-                    await ActivityObserver.NotifySystemActivity();
+                    await ActivityObserver.NotifySystemActivityAsync();
                 }
             }
         }
 
-        private void InternalRefresh()
-            => InvokeAsync(StateHasChanged);
+        private async Task InternalRefreshAsync()
+        {
+            await InvokeAsync(StateHasChanged);
+        }
 
         private async Task PopulateServerModelAsync()
         {
@@ -81,47 +74,10 @@ namespace Konnekt.Presentation.Pages.Konnektion.Main
             }
         }
 
-        private async Task CheckForServerChangesAsync()
+        private void OnChannelClicked(string channelId)
         {
-            if (ServerModel is not null)
-            {
-                var channelResp = ServiceHandler(await ServerManager.GetServerChannelsAsync(ServerModel));
-                if (!channelResp.Success)
-                    return;
-
-                if (ServerModel.ServerChannels.Count != channelResp.Result!.Count)
-                {
-                    ServerModel.ServerChannels = channelResp.Result!;
-                }
-
-                StateHasChanged();
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-#pragma warning disable CS8601 // Possible null reference assignment.
-                    ActivityObserver.SystemActivityFuncs -= InternalRefresh;
-#pragma warning restore CS8601 // Possible null reference assignment.
-                }
-
-                disposed = true;
-            }
-        }
-
-        ~KonnektionContainer()
-        {
-            Dispose(disposing: false);
+            ActiveChannelId = channelId;
+            StateHasChanged();
         }
     }
 }

@@ -1,0 +1,13 @@
+﻿.konnekt-image-renderer {
+    object-fit: cover;
+    border-radius: 1.5rem;
+}
+
+.konnekt-image-renderer__profile-image {
+    width: 4rem;
+    height: 4rem;
+}
+
+.konnekt-image-renderer__message-image {
+    width: 35%;
+}

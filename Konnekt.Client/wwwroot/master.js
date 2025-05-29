@@ -1,13 +1,24 @@
 //IMPORT ALL JS FILES TO THIS
 
-const dotNetHelper = null;
+// ===== Add all window declarations here =====
+window.onbeforeunload = endSessionHandler;
+// ============================================
+
+
+var dotNetHelper = null;
 
 function setDotNetHelper(value) {
     dotNetHelper = value;
 }
 
 function endSessionHandler() {
-    await dotNetHelper.invokeMethodAsync("EndSession");
+    if (dotNetHelper !== undefined)
+        dotNetHelper.invokeMethodAsync("EndSession", performance.navigation.type);
 }
 
-window.onbeforeunload = endSessionHandler;
+function scrollToBottom() {
+    var messageBox = document.getElementById("jsMessageBox")
+
+    if (messageBox != null)
+        messageBox.scrollTo({ top: messageBox.scrollHeight, behavior: "instant" });
+}

@@ -31,6 +31,7 @@ namespace Konnect.Service.DatabaseManager.Models
 
         #region Relationships
         public virtual Server? Server { get; set; }
+        public virtual ICollection<ServerMessage> ServerMessages { get; set; } = [];
         #endregion
     }
 }

@@ -4,10 +4,12 @@
 @using System.Text
 @using System.Text.Encodings.Web
 @using Konnect.Service.DatabaseManager.Models
+@using Konnect.Service.Services.UserManagerHelperService
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
 
 @inject UserManager<User> UserManager
+@inject UserManagerHelper UserManagerHelper
 @inject IUserStore<User> UserStore
 @inject SignInManager<User> SignInManager
 @inject IEmailSender<User> EmailSender
@@ -31,6 +33,11 @@
                 <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
                 <label for="email">Email</label>
                 <ValidationMessage For="() => Input.Email" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.Username" class="form-control" autocomplete="username" aria-required="true" placeholder="username" />
+                <label for="username">Username</label>
+                <ValidationMessage For="() => Input.Username" class="text-danger" />
             </div>
             <div class="form-floating mb-3">
                 <InputText type="password" @bind-Value="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
@@ -68,6 +75,13 @@
     public async Task RegisterUser(EditContext editContext)
     {
         var user = CreateUser();
+
+        var resp = await UserManagerHelper.UpdateDisplayName(user, Input.Username);
+        if (resp.Success)
+            user = resp.Result;
+
+        if (user is null)
+            return;
 
         await UserStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
         var emailStore = GetEmailStore();
@@ -130,6 +144,11 @@
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; } = "";
+
+        [Required]
+        [MaxLength(64)]
+        [Display(Name = "Username")]
+        public string Username { get; set; } = "";
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]

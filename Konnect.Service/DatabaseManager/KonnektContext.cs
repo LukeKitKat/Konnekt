@@ -3,6 +3,7 @@ using Konnekt.Client.Migrations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -15,13 +16,13 @@ namespace Konnect.Service.DatabaseManager
         public DbSet<Server> Servers { get; set; }
         public DbSet<ServerChannel> ServerChannels { get; set; }
         public DbSet<ServerJoinCode> ServerJoinCodes { get; set; }
-        public DbSet<ServerMessages> ServerMessages { get; set; }
+        public DbSet<ServerMessage> ServerMessages { get; set; }
+        public DbSet<ServerMessageFile> ServerMessagesFiles { get; set; }
         public DbSet<ServerUser> ServerUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            var hasher = new PasswordHasher<User>();
 
             builder.Entity<IdentityRole>().HasData(
                 new IdentityRole()
