@@ -1,0 +1,13 @@
+﻿.popover-menu {
+    --popover-menu__display: none;
+    /**/
+    display: var(--popover-menu__display);
+    background-color: var(--color-primary);
+    position: relative;
+    top: 5rem;
+    right: 10.75rem;
+}
+
+.popover-menu__display_all {
+    --popover-menu__display: initial;
+}

@@ -17,3 +17,21 @@
 .konnektion__members-container {
     border-left: var(--border-standard);
 }
+
+.konnektion__chat-messages-spacer {
+}
+
+    .konnektion__chat-messages-spacer hr {
+        position: relative;
+        top: -2rem;
+    }
+
+    .konnektion__chat-messages-spacer h4 {
+        position: relative;
+        top: 2rem;
+        /**/
+        width: max-content;
+        justify-self: center;
+        background-color: var(--color-primary);
+        z-index: 1;
+    }

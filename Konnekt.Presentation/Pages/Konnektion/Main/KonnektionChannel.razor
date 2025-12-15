@@ -22,6 +22,17 @@
 
                 @foreach (var message in ChannelModel.ServerMessages.OrderBy(x => x.TimeSent))
                 {
+                    if (message.TimeSent.Day > LastMessageDate.Day || 
+                       (message.TimeSent.Day < LastMessageDate.Day && message.TimeSent.Month > LastMessageDate.Month))
+                    {
+                        <div class="konnektion__chat-messages-spacer">
+                            <h4 class="d-flex px-3 m-0">@(message.TimeSent.ToShortDateString().ToString())</h4>
+                            <hr class="my-5" />
+                        </div>
+
+                        LastMessageDate = message.TimeSent;
+                    }
+
                     <KonnektionMessage MessageModel="@message" />
                 }
             </div>

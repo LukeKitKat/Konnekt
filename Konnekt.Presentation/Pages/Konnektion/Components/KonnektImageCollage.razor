@@ -1,0 +1,19 @@
+﻿@using Konnekt.Presentation.Components.Base
+@using Konnekt.Presentation.Components.KonnektImageRenderer
+@using Konnekt.Presentation.Components.KonnektImageRenderer.Enums
+@inherits PresentationBase
+
+<div class="row">
+    @foreach (var stack in StackFiles(VirtualizedFiles.First()))
+    {
+        @foreach(var file in stack)
+        {
+            <div class="col-md-4">
+                <KonnektImageRenderer Class="konnektion-message__image me-2 mb-2"
+                                      ImageSource="@file.FileContent"
+                                      ImageAltText="@($"{file.FileName}")"
+                                      ImageType="ImageType.Message" />
+            </div>
+        }
+    }
+</div>

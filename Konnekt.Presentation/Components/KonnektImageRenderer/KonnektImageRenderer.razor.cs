@@ -17,6 +17,8 @@ namespace Konnekt.Presentation.Components.KonnektImageRenderer
         [Parameter]
         public string? ImageAltText { get; set; }
         [Parameter]
+        public string? IconSource { get; set; } = "fa-solid fa-circle-user";
+        [Parameter]
         public string? Class { get; set; }
         [Parameter]
         public ImageType ImageType { get; set; } = ImageType.Profile;

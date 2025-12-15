@@ -17,7 +17,7 @@
                                   ImageSource="@MessageModel.Sender?.ProfilePicture"
                                   ImageAltText="@($"{MessageModel.Sender?.DisplayName}s Profile Picture")" />
 
-            <div class="col-11 justify-content-evenly pb-5">
+            <div class="konnektion-message__text col justify-content-evenly pb-4">
                 <h6 class="konnektion-message__text-header">@(_messageHeader)</h6>
 
                 @if (editingState)
@@ -46,29 +46,23 @@
                 {
                     @if (!string.IsNullOrEmpty(MessageModel.MessageBody))
                     {
-                        <p class="konnektion-message__text-body">@MessageModel.MessageBody</p>
+                        <p class="konnektion-message__text-body py-2">@MessageModel.MessageBody</p>
                     }
-
-                    <div class="w-75 d-flex flex-wrap">
-                        @foreach (var file in MessageModel.ServerMessageFiles)
-                        {
-                            <KonnektImageRenderer Class="konnektion-message__image me-2 mb-2"
-                                                  ImageSource="@file.FileContent"
-                                                  ImageAltText="@($"{file.FileName}")"
-                                                  ImageType="ImageType.Message" />
-                        }
-                    </div>
                 }
+
+                <KonnektImageCollage ServerMessageFiles="@MessageModel.ServerMessageFiles" />
             </div>
 
-            <div class="konnektion-message__context-container justify-content-center">
-                <KonnektButton OnClick="@ToggleEditState"
-                               Icon="fa-solid fa-pen-to-square"
-                               ButtonSize="ButtonSize.Square" />
+            <div class="konnektion-message__context">
+                <div class="konnektion-message__context-container">
+                    <KonnektButton OnClick="@ToggleEditState"
+                                   Icon="fa-solid fa-pen-to-square"
+                                   ButtonSize="ButtonSize.Square" />
 
-                <KonnektButton OnClick="@OnDeleteClickedAsync"
-                               Icon="fa-solid fa-trash-can"
-                               ButtonSize="ButtonSize.Square" />
+                    <KonnektButton OnClick="@OnDeleteClickedAsync"
+                                   Icon="fa-solid fa-trash-can"
+                                   ButtonSize="ButtonSize.Square" />
+                </div>
             </div>
         </div>
     </div>

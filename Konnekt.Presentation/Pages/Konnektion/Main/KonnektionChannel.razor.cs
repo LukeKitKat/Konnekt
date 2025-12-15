@@ -27,6 +27,7 @@ namespace Konnekt.Presentation.Pages.Konnektion.Main
         private List<User> OfflineUsers { get; set; } = [];
 
         private EditContext? MessageContext;
+        private DateTime LastMessageDate = DateTime.MinValue;
 
         protected override void OnInitialized()
         {
@@ -72,7 +73,7 @@ namespace Konnekt.Presentation.Pages.Konnektion.Main
                 if (user is null)
                     return;
 
-                var resp = ServiceHandler(await ServerManager.AddMessageToChannelAsync(ChannelModel.Id, user.Id, MessageInput.MessageBody!, MessageInput.Files!));
+                var resp = ServiceHandler(await ServerManager.AddMessageToChannelAsync(ChannelModel.Id, user.Id, MessageInput.MessageBody ?? string.Empty, MessageInput.Files ?? []));
                 if (!resp.Success)
                     return;
 

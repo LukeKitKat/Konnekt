@@ -20,7 +20,7 @@ namespace Konnekt.Presentation.Components.ServerBar
             .AddClass("fa-square-caret-right", _collapsed == true)
             .Build();
 
-        private string ServerBarClasses => new CssBuilder("server-bar col-1")
+        private string ServerBarClasses => new CssBuilder("server-bar py-2 col-1")
             .AddClass("server-bar--collapsed", _collapsed == true)
             .Build();
 

@@ -1,11 +1,14 @@
 .konnektion-message__container {
 }
 
-    .konnektion-message__container:hover > .konnektion-message__context-container {
+    .konnektion-message__container:hover .konnektion-message__context-container {
         display: flex !important;
-        left: 80%;
-        position: absolute;
+        flex-direction: column;
     }
+
+.konnektion-message__text {
+    width: 0rem;
+}
 
 .konnektion-message__text-header {
     margin: 0;
@@ -19,4 +22,8 @@
 
 .konnektion-message__context-container {
     display: none;
+}
+
+.konnektion-message__context {
+    width: 4rem;
 }

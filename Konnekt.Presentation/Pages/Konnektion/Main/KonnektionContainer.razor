@@ -6,6 +6,7 @@
 @using Konnekt.Presentation.Components.KonnektIcon
 @using Konnekt.Presentation.Components.KonnektIcon.Models
 @using Konnekt.Presentation.Components.KonnektInput
+@using Konnekt.Presentation.Components.KonnektPopoverMenu
 @using Konnekt.Presentation.Pages.Konnektion.Main
 @using Microsoft.AspNetCore.Components.Forms
 
@@ -25,8 +26,7 @@
 
                     <h3 class="m-0">@ServerModel.ServerName</h3>
 
-                    <KonnektButton Icon="fa-solid fa-ellipsis"
-                                   ButtonSize="ButtonSize.Square" />
+                    <KonnektPopoverMenu Icon="fa-solid fa-ellipsis"/>
 
                 </div>
 
